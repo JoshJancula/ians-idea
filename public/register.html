@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="./css/style.css" type="text/css" />
+</head>
+
+<body>
+    <header></header>
+    <main>
+
+        <div class="row" id="registerContainer">
+            <div class="container col m3"></div>
+            <div class="container col m6 center-align">
+                <div class="card blue lighten-1" id="userRegister">
+                    <div class="card-content white-text">
+                        <span class="card-title">User Register</span>
+                        <div class="row">
+                            <form class="col m12">
+
+                                <div class="row">
+                                    <div class="input-field col m12">
+                                        <input id="username" type="text" class="validate">
+                                        <label class="white-text" for="username" >Username</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m12">
+                                        <input id="registerEmail" type="email" class="validate">
+                                        <label class="white-text" for="email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m12">
+                                        <input id="registerPassword" type="password" class="validate">
+                                        <label class="white-text" for="password" >Password</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="center-align">
+                                        <button data-target="termsModal" class="btn modal-trigger blue lighten-4 black-text center-align">Register</button>
+                                    </div>
+
+                                </div>
+                                <div class="row"><a href="/login" class="white-text">Login</a></div><br>
+                                <div class="row"><a href="/main" class="white-text">Nevermind</a></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container col m3"></div>
+        </div>
+
+
+
+
+        <!-- terms modal -->
+        <div id="termsModal" class="modal blue-green lighten-2">
+            <div class="modal-content">
+
+                <h2 class="white-text">TERMS AND CONDITIONS<span class="accountInfo"></span></h2>
+                <h5 class="white-text">IN ORDER TO CREATE AN ACCOUNT YOU MUST AGREE TO THE FOLLOWING TERMS AND CONDITIONS: <span class="accountInfo"></span></h5>
+
+                <p class="white-text">
+                    <ul>
+                        <li class="white-text">You agree to blah blah blah blah blah</li>
+                        <li class="white-text">You also agree to blah and just a little more blah</li>
+                    </ul>
+                </p>
+
+
+
+                <span class="accountInfo"></span></p>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
+
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" id="registerUser">I Agree</a>
+            </div>
+        </div>
+        </div>
+        <!--end modal-->
+
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js " integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin=" anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js "></script>
+    <script src="./js/register.js "></script>
+    <script type="text/javascript ">
+        $(document).ready(function() {
+            $('select').material_select();
+            $('.modal').modal();
+        });
+    </script>
+
+</body>
+
+</html>

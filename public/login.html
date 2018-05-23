@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="./css/style.css" type="text/css" />
+</head>
+
+<body>
+    <header></header>
+
+    <main>
+
+        <div class="row">
+            <div class="container col m3"></div>
+            <div class="container col m6 center-align">
+                <div class="card blue userLoginCard">
+                    <div class="card-content white-text" id="userLogin">
+                        <span class="card-title">User Login</span>
+                        <div class="row">
+                            <form class="col m12">
+                                <div class="row">
+                                    <div class="input-field col m12">
+                                        <input id="userEmail" type="email" class="validate">
+                                        <label class="white-text" for="email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m12">
+                                        <input id="userPassword" type="password" class="validate">
+                                        <label class="white-text" for="password">Password</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field">
+                                        <a href="#" id="loginTheUser" class="btn waves-effect waves-light blue-grey lighten-3 center-align" style="margin-top: 15px; width: 200px;"><span class="black-text">Login</span></a>
+                                    </div>
+                                </div>
+                                <a href="/register"><span class="white-text">Not a member? Register Here</span></a> <br>
+                                <a class="white-text modal-trigger" href="" data-target="forgotPassword">Forgot Password?</a>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container col m3"></div>
+        </div>
+
+
+        <!-- forgotPassword modal -->
+        <div id="forgotPassword" class="modal blue-grey darken-2">
+            <div class="modal-content">
+                <h4 class="white-text">Input the email address associated with your account and we will email your password to you.</h4>
+                <form class="col m12">
+                    <div class="row">
+                        <div class="input-field col m12">
+                            <input id="forgot" type="text" class="validate">
+                            <label for="forgot">Input email here</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field">
+                            <a href="#" id="getPassword" class="btn waves-effect waves-light blue-grey lighten-3 col m5 offset-s1" style="margin-left: 180px; margin-top: 15px;"><span class="black-text">Get Password</span></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Nevermind</a>
+            </div>
+        </div>
+        <!--end modal-->
+
+
+    </main>
+
+
+    <!--<footer class="page-footer blue-grey darken-2 ">-->
+    <!--    <div class="footer-copyright ">-->
+    <!--        <div class="container white-text ">-->
+    <!--            © 2018-->
+    <!--            <a class="white-text text-lighten-4 right " href='/faq'>FAQ</a>-->
+
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</footer>-->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="./js/login.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.collapsible').collapsible();
+            $(".button-collapse").sideNav();
+            $('.modal').modal();
+        });
+    </script>
+</body>
+
+</html>

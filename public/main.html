@@ -21,43 +21,44 @@
                 <a href="#" data-activates="slide-out" class="center button-collapse hide-on-med-and-up" id="mobileNavIcon"><i class="center material-icons medium">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="/main">Main</a></li>
-                    <li><a href="/profile">My Account</a></li>
-                    <li><a href="/login">Login</a></li>
+                    <li><a href="/profile">My Reviews</a></li>
+                    <li><a href="#loginModal" data-target="loginModal" class="modal-action modal-close modal-trigger waves-effect waves-green btn-flat white-text">Login</a></li>
                 </ul>
             </div>
         </nav>
 
         <!--mobile nav-->
         <ul id="slide-out" class="side-nav hide-on-med-and-up">
-
+            <li><a href="/main">Main</a></li>
+            <li><a href="/profile">My Reviews</a></li>
+            <li><a href="#!" data-target="loginModal" class="modal-action modal-close modal-trigger waves-effect waves-green btn-flat">Login</a></li>
         </ul>
         <!--end nav-->
 
 
         <!--begin main content area-->
         <div class='row'>
-            <div class='card blue white-text'>
-                <div class='card-content center'>
+            <div class='col l5 m5 s12 center white-text'>
                     <h3>Welcome to Where2Poo! Click below to find a restroom near you.</h3>
                     <!--button finds you bathrooms near you-->
-                    <a id='searchBathroom' class="waves-effect waves-light btn">button</a>
+                    <a id='searchBathroom' class="waves-effect waves-light btn">Find a Bathroom</a>
                     <h3>Or Click here to add a new restroom to our network.</h3>
-                    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">New Bathroom</a>
+                    <a class="waves-effect waves-light btn modal-trigger" href="#bathRoomModal">New Bathroom</a>
                 </div>
+            <div class='col l7 m7 s12'>
+                <img id='bathroomImage' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKtx2E9_rRxu83t46jTJkr3t_MCGqywxAVO4euoXWOdcQYS6n6hA'>
             </div>
         </div>
 
-        <div class='row' id='cardArea'></div>
+        <div class='row'>
+            <div class='col l2 m2 s0'></div>
+             <div class='col l8 m8 s12' id='cardArea'></div>
+              <div class='col l2 m2 s0'></div>
+        </div>
 
         <!--end main content area-->
 
-        <div class='row'>
-            <!-- Modal Trigger -->
-
-            <a class="waves-effect waves-light btn modal-trigger" href="#modal2">New Review</a>
-        </div>
-
-        <!-- Modal Structure -->
+        <!-- add bathRoom modal -->
         <div id="bathRoomModal" class="modal black">
             <div class="modal-content">
                 <div class="row">
@@ -107,10 +108,11 @@
             </div>
 
         </div>
+        <!--end addBathroom modal-->
 
 
 
-        <!-- Modal Structure -->
+        <!-- post modal -->
         <div id="postModal" class="modal black">
             <div class="modal-content">
                 <div class="row">
@@ -148,15 +150,15 @@
                             </div>
                         </div>
                         <div class='row'>
-                        <div class="file-field input-field">
-                            <div class="btn">
-                                <span>File</span>
-                                <input id='image' type="file" multiple>
+                            <div class="file-field input-field">
+                                <div class="btn">
+                                    <span>File</span>
+                                    <input id='image' type="file" multiple>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload image? (optional)">
+                                </div>
                             </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" placeholder="Upload image? (optional)">
-                            </div>
-                        </div>
                         </div>
                         <div class="row">
                             <div class="input-field">
@@ -168,6 +170,137 @@
                 </div>
             </div>
         </div>
+        <!--end post modal-->
+
+
+        <!-- login modal -->
+        <div id="loginModal" class="modal blue">
+            <div class="modal-content">
+                <div class="row">
+                    <form class="col m12">
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <input id="userEmail" type="email" class="validate white-text">
+                                <label class="white-text" for="email">Email</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <input id="userPassword" type="password" class="validate white-text">
+                                <label class="white-text" for="password">Password</label>
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="input-field">
+                                <a href="#" id="loginTheUser" class="btn waves-effect waves-light blue-grey lighten-3 center-align" style="margin-top: 15px; width: 200px;"><span class="black-text">Login</span></a>
+                            </div><br>
+                       
+                        <a class="white-text modal-action modal-close modal-trigger" href="" data-target="registerModal">Not a member? Register Here</a><br>
+                        <a class="white-text modal-action modal-close modal-trigger" href="" data-target="forgotPassword">Forgot Password?</a>
+                         </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--end login modal-->
+
+        <!-- register -->
+        <div id="registerModal" class="modal blue">
+            <div class="modal-content">
+                <div class="row">
+                    <form class="col m12">
+
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <input id="username" type="text" class="validate">
+                                <label class="white-text" for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <input id="registerEmail" type="email" class="validate">
+                                <label class="white-text" for="email">Email</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col m12">
+                                <input id="registerPassword" type="password" class="validate">
+                                <label class="white-text" for="password">Password</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="center-align">
+                                <button data-target="termsModal" class="btn modal-action modal-close modal-trigger blue lighten-4 black-text center-align">Register</button><br>
+
+                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat white-text">Nevermind</a><br>
+                                <a href="#!" data-target="loginModal" class="modal-action modal-close modal-trigger waves-effect waves-green btn-flat white-text">Login</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--end register modal-->
+
+        <!-- terms modal -->
+        <div id="termsModal" class="modal blue">
+            <div class="modal-content">
+                <h2 class="white-text">TERMS AND CONDITIONS<span class="accountInfo"></span></h2>
+                <h5 class="white-text">IN ORDER TO CREATE AN ACCOUNT YOU MUST AGREE TO THE FOLLOWING TERMS AND CONDITIONS: <span class="accountInfo"></span></h5>
+                <p class="white-text">
+                    <ul>
+                        <li class="white-text">You agree to blah blah blah blah blah</li>
+                        <li class="white-text">You also agree to blah and just a little more blah</li>
+                    </ul>
+                </p>
+                <span class="accountInfo"></span></p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" id="registerUser">I Agree</a>
+            </div>
+        </div>
+        </div>
+        <!--end modal-->
+
+
+        <!-- forgotPassword modal -->
+        <div id="forgotPassword" class="modal blue">
+            <div class="modal-content white-text">
+                <h4 class="white-text">Input the email address associated with your account and we will email your password to you.</h4>
+                <form class="col m12">
+                    <div class="row">
+                        <div class="input-field col m12 white-text">
+                            <input id="forgot" type="text" class="validate">
+                            <label class='white-text' for="forgot">Input email here</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field">
+                            <a href="#" id="getPassword" class="btn waves-effect waves-light blue-grey lighten-3 col m5 offset-s1" style="margin-left: 180px; margin-top: 15px;"><span class="black-text">Get Password</span></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Nevermind</a>
+            </div>
+        </div>
+        <!--end modal-->
+        
+        <!-- Reviews for bathrooms modals -->
+  <div id="reviewsModal" class="modal">
+    <div class="modal-content">
+      <div class='row' id='reviewsHere'></div>
+      <h3 id='reviewText'></h3>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Dismiss</a>
+    </div>
+  </div>
+  <!--end reviews modal-->
 
 
     </main>
@@ -176,13 +309,19 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="./js/post.js"></script>
-    <script src="./js/find.js"></script>
+    <script src="./js/login.js"></script>
+    <script src="./js/register.js"></script>
 
     <script>
         $(document).ready(function() {
             $('.collapsible').collapsible();
             $(".button-collapse").sideNav();
             $('#bathRoomModal').modal();
+            $('#termsModal').modal();
+            $('#forgotPassword').modal();
+            $('#registerModal').modal();
+            $('#loginModal').modal();
+            $('#reviewsModal').modal();
             $('select').material_select();
         });
     </script>

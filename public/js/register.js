@@ -23,7 +23,8 @@
       username: username,
     }; // submit the new user 
     submitToApi(newUser);
-
+    // close the modal
+    $("#termsModal").modal('close')
     // empty out the input fields
     $("#registerEmail").val("")
     $("#registerPassword").val("")
@@ -39,19 +40,10 @@
   })
   }
 
- 
   // function to handle errors
   function handleErr(err) {
     $("#alert .msg").text(err.responseJSON);
     $("#alert").fadeIn(500);
   }
-
-  // login button up in nav
-  $("#loginNav").on("click", function(event) {
-    event.preventDefault();
-    // go to the profile
-    window.location.href = '/login';
-  });
-
 
 });

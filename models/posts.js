@@ -12,6 +12,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       len: [1]
     },
+    username: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      len: [1]
+    },
     airQuality: {
       type: DataTypes.TEXT,
       allowNull: true,

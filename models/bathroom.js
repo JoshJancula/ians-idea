@@ -10,21 +10,26 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: true
     },
-    establishment: { // their username
+    establishment: { 
         type: DataTypes.STRING,
          unique: false,
         allowNull: false,
     },
-    sex: { // the users password
+    sex: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    department: { // their username
+    dividers: { // their username
+        type: DataTypes.STRING,
+         unique: false,
+        allowNull: true,
+    },
+    department: { 
         type: DataTypes.STRING,
          unique: false,
         allowNull: false,
     },
-    table: { // their username
+    table: { 
         type: DataTypes.STRING,
          unique: false,
         allowNull: false,

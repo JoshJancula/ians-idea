@@ -1,5 +1,5 @@
 // Requiring our models
-var db = require("../models");
+const db = require("../models");
 
 // Routes
 // =============================================================
@@ -7,19 +7,32 @@ module.exports = function(app) {
 
   // GET route for getting all bathroom locations
   app.get("/api/bathrooms", function(req, res) {
-    var query = {};
-    if (req.query.id) {
-      query.id = req.query.id;
-    }
-
+   
     db.Bathroom.findAll({
-      where: query,
       include: [db.Post]
     }).then(function(dbBath) {
       res.json(dbBath);
     });
   });
-
+  
+   // GET route for getting all bathroom locations
+  app.get("/api/bathrooms/search", function(req, res) {
+    var query = {};
+    if (req.query.sex) {
+      query.sex = req.query.sex;
+    }
+    db.Bathroom.findAll({
+      where: {
+      sex: req.query.sex
+    },
+      include: [db.Post]
+    }).then(function(dbBath) {
+      res.json(dbBath);
+    });
+  });
+  
+  
+  
   // Get rotue for retrieving a single bathroom
   app.get("/api/bathrooms/:id", function(req, res) {
 
@@ -50,6 +63,7 @@ module.exports = function(app) {
       res.json(dbBath);
     });
   });
-
+  
+ 
 
 };

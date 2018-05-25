@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    $("#dividerRow").hide();
+
     $('#postModal').modal({
         ready: function(modal, trigger) {
             // gets the post that this belongs to 
@@ -39,6 +41,7 @@ $(document).ready(function() {
         fileName = file.name
         checkType(fileType);
     }
+
 
     // function gets the user location 
     function getLocation() {
@@ -95,12 +98,14 @@ $(document).ready(function() {
             if (alreadyExists == false) {
                 let sex = $("#sex").val();
                 let department = $("#department").val().trim();
+                let dividers = $("#dividers").val();
                 let table = $("#hasChangingTable").val();
                 let establishment = $("#establishment").val().trim();
                 // new bathroom data
                 let newBathroom = {
                     location: userAddress,
                     sex: sex,
+                    dividers: dividers,
                     department: department,
                     table: table,
                     establishment: establishment,
@@ -175,48 +180,66 @@ $(document).ready(function() {
     }
     // button handles submitting the new Post
     $("#submitPost").on('click', addNewPost);
-    
-   //Click handler for search submit button to search bathroom
-  $("#searchBathroom").on("click", function(event) {
-    event.preventDefault();
 
-    $.get('/api/bathrooms', function(data) {
-      let newData = []
-      for (let i = 0; i < data.length; i++) {
-        let resultLatLng = JSON.parse(data[i].location)
-        let resultLat = resultLatLng.lat
-        let resultLng = resultLatLng.lng
-
-        let d = distance(startLng, startLat, resultLng, resultLat)
-        console.log("distance from click user")
-        console.log(d)
-        if (d < (5 * 1.60934)) {
-          let obj = data[i]
-          let miles = (d * 0.621371).toFixed(2)
-          obj["distance"] = miles
-          newData.push(obj)
+    //Click handler for search submit button to search bathroom
+    $("#searchBathroom").on("click", function(event) {
+        event.preventDefault();
+         let params;
+        // if searching for mens rooms
+        if ($('#searchMen').prop( "checked" )) {
+            console.log("you selected mens rooms")
+            params = {
+                sex: ["Men", "Family"]
+            }
+        }// if searching womens
+        if ($('#searchWomen').prop( "checked" )) {
+            params = {
+                sex: ["Women", "Family"]
+            }
+        } // if searching all
+        if ($('#searchAll').prop( "checked" )) {
+            params = {
+                sex: ["Women", "Family", "Men"]
+            }
         }
-      }
-      console.log("data retruned from searchBathroom: " + newData);
-      renderLocations(newData);
+
+        $.get('/api/bathrooms/search', params,  function(data) {
+            let newData = []
+            for (let i = 0; i < data.length; i++) {
+                let resultLatLng = JSON.parse(data[i].location)
+                let resultLat = resultLatLng.lat
+                let resultLng = resultLatLng.lng
+
+                let d = distance(startLng, startLat, resultLng, resultLat)
+                console.log("distance from click user")
+                console.log(d)
+                if (d < (5 * 1.60934)) {
+                    let obj = data[i]
+                    let miles = (d * 0.621371).toFixed(2)
+                    obj["distance"] = miles
+                    newData.push(obj)
+                }
+            }
+            console.log("data retruned from searchBathroom: " + newData);
+            renderLocations(newData);
+        });
     });
-  });
-  
-  // when you click on the view reviews button
-  $(document).on("click", '.viewReviews', function(event) {
-      let id = $(this).attr('data-id');
-      console.log("clicked on .viewReviews, id= " + id)
-      getReviews(id);
-  });
-  
-  function getReviews(id) {
-      $.get("api/bathrooms/" + id, function(data) {
-          let posts = data.Posts;
-          $("#reviewsHere").empty();
-          console.log("posts to be passed: " + JSON.stringify(posts))
-          renderReviews(posts);
-      });
-  }
+
+    // when you click on the view reviews button
+    $(document).on("click", '.viewReviews', function(event) {
+        let id = $(this).attr('data-id');
+        console.log("clicked on .viewReviews, id= " + id)
+        getReviews(id);
+    });
+
+    function getReviews(id) {
+        $.get("api/bathrooms/" + id, function(data) {
+            let posts = data.Posts;
+            $("#reviewsHere").empty();
+            console.log("posts to be passed: " + JSON.stringify(posts))
+            renderReviews(posts);
+        });
+    }
 
 
     // submits the post
@@ -273,58 +296,78 @@ $(document).ready(function() {
             submitPost(newPost, downloadUrl);
         })
     }
-    
-  
-  // make cards for locations rendered
-  function renderLocations(data) {
-    if (data.length !== 0) {
-      data.forEach(function(result) {
-        var div = $("<div>").append(
-          "<div class='card'>" + "<div class='card-content center'>" +
-          "<h5>Establishment: " + result.establishment + "</h5>" +
-          "<p> Floor/ Department:  " + result.department + "</p>" +
-          "<p> Gender: " + result.sex + "</p>" +
-          "<p> Changing Table: " + result.table + "</p>" +
-          "<p> Distance: " + result.distance + "</p>" +
-          "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
-          "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button>" +
-          "</div>" +
-          "</div>" +
-          "</div>" 
-        );
-        $("#cardArea").append(div);
-        //End for loop
-      });
-
-    }
-  }
 
 
-   // make cards for revies
-  function renderReviews(data) {
+    // make cards for locations rendered
+    function renderLocations(data) {
         if (data.length !== 0) {
-        data.forEach(function(result) {
-        var div = $("<div>").append(
-          "<div class='card'>" + "<div class='card-content'>" +
-           "<div class='row'><div class='col l6 m6 s12'>" + 
-          "<h5>Rating: " + result.rating + " Stars</h5>" +
-          "<p> Air Quality:  " + result.airQuality + "</p>" +
-          "<p> Review: " + result.comment + "</p>" +
-          "<p> Reviewed by: " + result.username + "</p>" +
-          "</div><div class='col l6 m6 s12'>" +
-         "<img class='bathroomImage' id='searchImage' src=" + result.image + ">" +
-         "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>" 
-        );
-        $("#reviewsHere").append(div);
-        //End for loop
-        });
+            data.forEach(function(result) {
+                if (result.sex != "Men") {// if its not the mens room
+                    var div = $("<div>").append(// display this
+                        "<div class='card'>" + "<div class='card-content center'>" +
+                        "<h5>Establishment: " + result.establishment + "</h5>" +
+                        "<p> Floor/ Department:  " + result.department + "</p>" +
+                        "<p> Gender: " + result.sex + "</p>" +
+                        "<p> Changing Table: " + result.table + "</p>" +
+                        "<p> Distance: " + result.distance + "</p>" +
+                        "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
+                        "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>"
+                    );
+                    $("#cardArea").append(div);
+                    //End for loop
+                }
+                else {// if it is a mens room
+                    var div = $("<div>").append(
+                        "<div class='card'>" + "<div class='card-content center'>" +
+                        "<h5>Establishment: " + result.establishment + "</h5>" +
+                        "<p> Floor/ Department:  " + result.department + "</p>" +
+                        "<p> Gender: " + result.sex + "</p>" +
+                        "<p> Urinal Dividers: " + result.dividers + "</p>" +
+                        "<p> Changing Table: " + result.table + "</p>" +
+                        "<p> Distance: " + result.distance + "</p>" +
+                        "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
+                        "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>"
+                    );
+                    $("#cardArea").append(div);
+                    //End for loop
+                }
+            });
+
+        }
+    }
+
+
+    // make cards for revies
+    function renderReviews(data) {
+        if (data.length !== 0) {
+            data.forEach(function(result) {
+                var div = $("<div>").append(
+                    "<div class='card'>" + "<div class='card-content'>" +
+                    "<div class='row'><div class='col l6 m6 s12'>" +
+                    "<h5>Rating: " + result.rating + " Stars</h5>" +
+                    "<p> Air Quality:  " + result.airQuality + "</p>" +
+                    "<p> Review: " + result.comment + "</p>" +
+                    "<p> Reviewed by: " + result.username + "</p>" +
+                    "</div><div class='col l6 m6 s12'>" +
+                    "<img class='bathroomImage' id='searchImage' src=" + result.image + ">" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+                $("#reviewsHere").append(div);
+                //End for loop
+            });
         }
         else {
             $("#reviewText").text("There are no reviews for this restroom yet")
         }
-  }
+    }
 
 });

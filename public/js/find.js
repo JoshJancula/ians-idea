@@ -49,6 +49,10 @@ $(document).ready(function() {
   $("#searchBathroom").on("click", function(event) {
     event.preventDefault();
 
+    let men = $("#searchMen").val();
+    let women = $("#searchWomen").val();
+    let all = $("#searchAll").val();
+     
     $.get('/api/bathrooms', function(data) {
       let newData = []
       for (let i = 0; i < data.length; i++) {

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="./css/style.css" type="text/css" />
+</head>
+
+<body>
+    <header></header>
+
+    <main>
+        
+         <!--begin nav-->
+        <nav>
+
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Where-2-Poo</a>
+                <a href="#" data-activates="slide-out" class="center button-collapse hide-on-large-only" id="mobileNavIcon"><i class="center material-icons medium">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/main">Main</a></li>
+                    <li><a href="/profile">My Reviews</a></li>
+                    <li><a href="#loginModal" data-target="loginModal" class="modal-action modal-close modal-trigger waves-effect waves-green btn-flat white-text">Login</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!--mobile nav-->
+        <ul id="slide-out" class="side-nav hide-on-large-only">
+            <li><a href="/main">Main</a></li>
+            <li><a href="/profile">My Reviews</a></li>
+            <li><a href="#!" data-target="loginModal" class="modal-action modal-close modal-trigger waves-effect waves-green btn-flat">Login</a></li>
+        </ul>
+        <!--end nav-->
+
+        
+         <div class='row'>
+            <div class='col l2 m0 s0'></div>
+             <div class='col l8 m12 s12' id='cardArea'></div>
+              <div class='col l2 m0 s0'></div>
+        </div>
+
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="./js/profile.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.collapsible').collapsible();
+            $(".button-collapse").sideNav();
+            $('.modal').modal();
+        });
+    </script>
+</body>
+
+</html>

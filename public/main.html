@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css" type="text/css" />
@@ -17,8 +17,8 @@
         <nav>
 
             <div class="nav-wrapper">
-                <a href="#" class="brand-logo">Where2Poo</a>
-                <a href="#" data-activates="slide-out" class="center button-collapse hide-on-med-and-up" id="mobileNavIcon"><i class="center material-icons medium">menu</i></a>
+                <a href="#" class="brand-logo">Where-2-Poo</a>
+                <a href="#" data-activates="slide-out" class="center button-collapse hide-on-large-only" id="mobileNavIcon"><i class="center material-icons medium">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="/main">Main</a></li>
                     <li><a href="/profile">My Reviews</a></li>
@@ -28,7 +28,7 @@
         </nav>
 
         <!--mobile nav-->
-        <ul id="slide-out" class="side-nav hide-on-med-and-up">
+        <ul id="slide-out" class="side-nav hide-on-large-only">
             <li><a href="/main">Main</a></li>
             <li><a href="/profile">My Reviews</a></li>
             <li><a href="#!" data-target="loginModal" class="modal-action modal-close modal-trigger waves-effect waves-green btn-flat">Login</a></li>
@@ -38,30 +38,34 @@
 
         <!--begin main content area-->
         <div class='row'>
-            <div class='col l5 m5 s12 center white-text'>
-                    <h3>Welcome to Where2Poo! Click below to find a restroom near you.</h3>
-                    <!--button finds you bathrooms near you-->
-                    <h5>Are you looking for</h5>
-                    <input  type="checkbox" id="searchMen" />
-                    <label class='white-text' for="searchMen">Men's Room</label><br>
-                    <input type="checkbox" id="searchWomen" />
-                    <label class='white-text' for="searchWomen">Women's Room</label><br>
-                    <input type="checkbox" id="searchAll" />
-                    <label class='white-text' for="searchAll">All Restooms</label><br>
-                    <a id='searchBathroom' class="waves-effect waves-light btn">Find a Bathroom</a>
-                    <h3>Or Click here to add a new restroom to our network.</h3>
-                    <a class="waves-effect waves-light btn modal-trigger" href="#bathRoomModal">New Bathroom</a>
-                </div>
-            <div class='col l7 m7 s12'>
+            <div class='col l5 m12 s12 center white-text'>
+                <h4>Welcome to Where-2-Poo! Click below to find a restroom near you.</h4>
+                <!--button finds you bathrooms near you-->
+                <h5>Are you looking for</h5>
+                <input type="checkbox" class='white-text' id="check1" onclick="selectOnlyThis(this.id)" />
+                <label class='white-text' for="check1">Men's Room</label><br>
+                <input type="checkbox" class='white-text' id="check2" onclick="selectOnlyThis(this.id)" />
+                <label class='white-text' for="check2">Women's Room</label><br>
+                <input type="checkbox" class='white-text' id="check3" onclick="selectOnlyThis(this.id)" />
+                <label class='white-text' for="check3">All Restooms</label><br>
+                <a id='searchBathroom' class="waves-effect waves-light btn blue lighten-2">Find a Bathroom</a>
+                <h4>Or Click here to add a new restroom to our network.</h4>
+                <!--<a class="waves-effect waves-light btn modal-trigger" href="#bathRoomModal">New Bathroom</a>-->
+                <a href="#bathRoomModal" class="modal-trigger btn-floating btn-large waves-effect waves-light red lighten-2"><i class="material-icons">add</i></a>
+            </div>
+            <div class='col l7 m12 s12'>
                 <img id='bathroomImage' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKtx2E9_rRxu83t46jTJkr3t_MCGqywxAVO4euoXWOdcQYS6n6hA'>
             </div>
         </div>
 
         <div class='row'>
-            <div class='col l2 m2 s0'></div>
-             <div class='col l8 m8 s12' id='cardArea'></div>
-              <div class='col l2 m2 s0'></div>
+            <div class='col l4 m12 s12'>
+                <div id="map"></div>
+            </div>
+            <div class='col l8 m12 s12' id='cardArea'></div>
+
         </div>
+        <div id='scrollHere'></div>
 
         <!--end main content area-->
 
@@ -77,11 +81,11 @@
                                   <option value="" disabled selected>Is this the Men's or Women's Restroom?</option>
                                   <option value="Men">Men's Room</option>
                                   <option value="Women">Women's Room</option>
-                                  <option value="Family">Family / Unisex</option>
+                                  <option value="Family/ Unisex">Family / Unisex</option>
                                 </select>
                             </div>
                         </div>
-                         <div class="row" id='dividerRow'>
+                        <div class="row" id='dividerRow'>
                             <div class="col s12 browser-default">
                                 <select id="dividers" class="white-text">
                                   <option value="" disabled selected>Are there dividers between the urinals?</option>
@@ -171,8 +175,8 @@
                                     <span>File</span>
                                     <input id='image' type="file" multiple>
                                 </div>
-                                <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text" placeholder="Upload image? (optional)">
+                                <div class="file-path-wrapper white-text">
+                                    <input class="file-path validate white-text" type="text" placeholder="Upload image? (optional)">
                                 </div>
                             </div>
                         </div>
@@ -210,10 +214,10 @@
                             <div class="input-field">
                                 <a href="#" id="loginTheUser" class="btn waves-effect waves-light blue-grey lighten-3 center-align" style="margin-top: 15px; width: 200px;"><span class="black-text">Login</span></a>
                             </div><br>
-                       
-                        <a class="white-text modal-action modal-close modal-trigger" href="" data-target="registerModal">Not a member? Register Here</a><br>
-                        <a class="white-text modal-action modal-close modal-trigger" href="" data-target="forgotPassword">Forgot Password?</a>
-                         </div>
+
+                            <a class="white-text modal-action modal-close modal-trigger" href="" data-target="registerModal">Not a member? Register Here</a><br>
+                            <a class="white-text modal-action modal-close modal-trigger" href="" data-target="forgotPassword">Forgot Password?</a>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -305,28 +309,32 @@
             </div>
         </div>
         <!--end modal-->
-        
+
         <!-- Reviews for bathrooms modals -->
-  <div id="reviewsModal" class="modal">
-    <div class="modal-content">
-      <div class='row' id='reviewsHere'></div>
-      <h3 id='reviewText'></h3>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Dismiss</a>
-    </div>
-  </div>
-  <!--end reviews modal-->
+        <div id="reviewsModal" class="modal">
+            <div class="modal-content">
+                <div class='row' id='reviewsHere'></div>
+                <h3 id='reviewText'></h3>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Dismiss</a>
+            </div>
+        </div>
+        <!--end reviews modal-->
 
 
     </main>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js" type="text/javascript"></script>
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJKypJQC2GoMDHQg2RXtTVSjc54ljmUMQ&libraries=places"></script>
     <script src="./js/post.js"></script>
     <script src="./js/login.js"></script>
     <script src="./js/register.js"></script>
+
 
     <script>
         $(document).ready(function() {
@@ -341,14 +349,25 @@
             $('select').material_select();
         });
     </script>
-    
+
     <script>
         function checkSex() {
-        let x = document.getElementById("sex").value;
-        if (x === "Men") {
-            $("#dividerRow").show();
+            let x = document.getElementById("sex").value;
+            if (x === "Men") {
+                $("#dividerRow").show();
+            }
         }
-    }
+
+        function selectOnlyThis(id) {
+            for (var i = 1; i <= 3; i++) {
+                if ("check" + i === id && document.getElementById("check" + i).checked === true) {
+                    document.getElementById("check" + i).checked = true;
+                }
+                else {
+                    document.getElementById("check" + i).checked = false;
+                }
+            }
+        }
     </script>
 </body>
 

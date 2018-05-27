@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
     $("#dividerRow").hide();
-
     $('#postModal').modal({
         ready: function(modal, trigger) {
             // gets the post that this belongs to 
@@ -10,13 +9,13 @@ $(document).ready(function() {
     });
 
     var config = {
-        apiKey: "AIzaSyBTiizpyWeqHfXdFDQsd6IoMdNWYvkceS8",
-        authDomain: "amee-store.firebaseapp.com",
-        databaseURL: "https://amee-store.firebaseio.com",
-        projectId: "amee-store",
-        storageBucket: "amee-store.appspot.com",
-        messagingSenderId: "457253723299"
-    };
+    apiKey: "AIzaSyDfdlz5KnJ_YTspgA0zoOYXh9MueUejrJY",
+    authDomain: "where-2-poo.firebaseapp.com",
+    databaseURL: "https://where-2-poo.firebaseio.com",
+    projectId: "where-2-poo",
+    storageBucket: "where-2-poo.appspot.com",
+    messagingSenderId: "622144128093"
+  };
     firebase.initializeApp(config);
 
     var userAddress;
@@ -31,6 +30,7 @@ $(document).ready(function() {
     var reader = new FileReader;
     var startLat;
     var startLng;
+    var map;
 
     // when the file input changes...
     input.onchange = () => {
@@ -86,7 +86,7 @@ $(document).ready(function() {
                 let d = distance(startLng, startLat, resultLng, resultLat)
                 let restroomType = data[i].sex;
                 // if we are in the same location and theres already an existing bathroom for that gender
-                if (d < (0.05 * 1.60934) && restroomType === currentType) {
+                if (d < (0.02 * 1.60934) && restroomType === currentType) {
                     let obj = data[i]
                     let miles = (d * 0.621371).toFixed(2)
                     obj["distance"] = miles
@@ -136,7 +136,7 @@ $(document).ready(function() {
             username = data.username;
             event.preventDefault();
             //  new post to hand to the database
-            let newPost = {
+             let newPost = {
                 rating: rating,
                 comment: comment,
                 airQuality: airQuality,
@@ -159,6 +159,7 @@ $(document).ready(function() {
                 return;
             } // if there is no file just submit message
             else if (fileName == undefined && acceptable == false) {
+               
                 submitPost(newPost)
                 // clear fields
                 $("#rating").val("");
@@ -168,6 +169,15 @@ $(document).ready(function() {
                 $("#postModal").modal('close');
             } // if there is a file
             else {
+                let newPost = {
+                rating: rating,
+                comment: comment,
+                airQuality: airQuality,
+                username: username,
+                image: image,
+                bathUserId: id,
+                BathroomId: bathroomId
+            };
                 uploadToFirebase(file, fileName, newPost);
                 // clear fields
                 $("#rating").val("");
@@ -184,22 +194,24 @@ $(document).ready(function() {
     //Click handler for search submit button to search bathroom
     $("#searchBathroom").on("click", function(event) {
         event.preventDefault();
+       
+        $("#cardArea").empty();
          let params;
         // if searching for mens rooms
-        if ($('#searchMen').prop( "checked" )) {
+        if ($('#check1').prop( "checked" )) {
             console.log("you selected mens rooms")
             params = {
-                sex: ["Men", "Family"]
+                sex: ["Men", "Family/ Unisex"]
             }
         }// if searching womens
-        if ($('#searchWomen').prop( "checked" )) {
+        if ($('#check2').prop( "checked" )) {
             params = {
-                sex: ["Women", "Family"]
+                sex: ["Women", "Family/ Unisex"]
             }
         } // if searching all
-        if ($('#searchAll').prop( "checked" )) {
+        if ($('#check3').prop( "checked" )) {
             params = {
-                sex: ["Women", "Family", "Men"]
+                sex: ["Women", "Family/ Unisex", "Men"]
             }
         }
 
@@ -209,7 +221,7 @@ $(document).ready(function() {
                 let resultLatLng = JSON.parse(data[i].location)
                 let resultLat = resultLatLng.lat
                 let resultLng = resultLatLng.lng
-
+                
                 let d = distance(startLng, startLat, resultLng, resultLat)
                 console.log("distance from click user")
                 console.log(d)
@@ -222,6 +234,9 @@ $(document).ready(function() {
             }
             console.log("data retruned from searchBathroom: " + newData);
             renderLocations(newData);
+            $( "#check1" ).prop( "checked", false );
+            $( "#check2" ).prop( "checked", false );
+            $( "#check3" ).prop( "checked", false );
         });
     });
 
@@ -288,30 +303,75 @@ $(document).ready(function() {
 
     // function submits image to firebase
     function uploadToFirebase(file, fileName, newPost) { // submit image
-        var storageRef = firebase.storage().ref('/customerPhotos/' + fileName);
+        var storageRef = firebase.storage().ref('/bathroomPhotos/' + fileName);
         var uploadTask = storageRef.put(file) // gets link to image
         uploadTask.on('state_changed', function(snapshot) {}, function(error) {}, function() {
+            console.log("downloadUrl: " + uploadTask.snapshot.downloadURL)
             downloadUrl = uploadTask.snapshot.downloadURL;
-            // sends the image url with the emails
-            submitPost(newPost, downloadUrl);
+             let postWithImage = {
+                rating: newPost.rating,
+                comment: newPost.comment,
+                airQuality: newPost.airQuality,
+                username: newPost.username,
+                image: downloadUrl,
+                bathUserId: newPost.bathUserId,
+                BathroomId: newPost.BathroomId
+            }
+            submitPost(postWithImage);
         })
     }
-
+   
 
     // make cards for locations rendered
     function renderLocations(data) {
-        if (data.length !== 0) {
+        if (data.length != 0) {
             data.forEach(function(result) {
+                let resultLatLng = JSON.parse(result.location)
+                let resultLat = resultLatLng.lat
+                let resultLng = resultLatLng.lng
+                console.log("lng inside renderLocations: " + resultLng)
+                let newFeature = { // get this location for map
+                    position: new google.maps.LatLng(resultLat, resultLng),
+                    type: 'info'
+                }// add to list of locations
+                features.push(newFeature);
+                let image;
+                let ratingTotal = 0;// get the ratings from the posts
+                let posts = result.Posts;
+                let averageRating;
+                // if there are posts to pull from...
+                if (posts.length != 0) {
+                // get last post
+                let lastPost = posts.length-1;
+                console.log("lastPost: " + lastPost)
+                // image is most recent uploaded photo of that facility
+                image = posts[lastPost].image;
+                for (let i = 0; i < posts.length; i++) {
+                    let ratingVal = parseInt(posts[i].rating);
+                    ratingTotal += ratingVal;
+                }// get the average from the ratings 
+                 averageRating = Math.round(ratingTotal / posts.length);
+                } 
+                else { // if there aren't any...
+                    image = "./images/noImage.png"
+                    averageRating = "There are currently no reviews or ratings for this restroom."
+                }
                 if (result.sex != "Men") {// if its not the mens room
                     var div = $("<div>").append(// display this
-                        "<div class='card'>" + "<div class='card-content center'>" +
+                        "<div class='card'>" + "<div class='card-content'>" +
+                        "<div class='row'><div class='col l6 m12 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
+                        "<p> Average Rating: " + averageRating + "</p>" +
                         "<p> Floor/ Department:  " + result.department + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
                         "<p> Changing Table: " + result.table + "</p>" +
                         "<p> Distance: " + result.distance + "</p>" +
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button>" +
+                        "</div>" +
+                        "<div class='col l6 m12 s12'>" + "<img class='bathroomImage' id='searchImage' src=" + image + " />" +
+                        "</div>" +
+                        "</div>" +
                         "</div>" +
                         "</div>" +
                         "</div>"
@@ -320,9 +380,11 @@ $(document).ready(function() {
                     //End for loop
                 }
                 else {// if it is a mens room
-                    var div = $("<div>").append(
-                        "<div class='card'>" + "<div class='card-content center'>" +
+                    var div = $("<div>").append(// display this
+                        "<div class='card'>" + "<div class='card-content'>" +
+                        "<div class='row'><div class='col l6 m12 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
+                        "<p> Average Rating: " + averageRating + " Stars</p>" +
                         "<p> Floor/ Department:  " + result.department + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
                         "<p> Urinal Dividers: " + result.dividers + "</p>" +
@@ -331,6 +393,10 @@ $(document).ready(function() {
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button>" +
                         "</div>" +
+                        "<div class='col l6 m12 s12'>" + "<img class='bathroomImage' id='searchImage' src=" + image + " />" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
                         "</div>" +
                         "</div>"
                     );
@@ -338,15 +404,19 @@ $(document).ready(function() {
                     //End for loop
                 }
             });
-
-        }
+           
+        } // initialize the map
+        initMap()
     }
-
 
     // make cards for revies
     function renderReviews(data) {
-        if (data.length !== 0) {
+        $("#reviewText").hide();
+        if (data.length != 0) {
             data.forEach(function(result) {
+                // convert formatted date to something legible
+                var formattedDate = data.createdAt
+                formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
                 var div = $("<div>").append(
                     "<div class='card'>" + "<div class='card-content'>" +
                     "<div class='row'><div class='col l6 m6 s12'>" +
@@ -354,6 +424,7 @@ $(document).ready(function() {
                     "<p> Air Quality:  " + result.airQuality + "</p>" +
                     "<p> Review: " + result.comment + "</p>" +
                     "<p> Reviewed by: " + result.username + "</p>" +
+                    "<p> Reviewed on: " + formattedDate + "</p>" +
                     "</div><div class='col l6 m6 s12'>" +
                     "<img class='bathroomImage' id='searchImage' src=" + result.image + ">" +
                     "</div>" +
@@ -366,8 +437,40 @@ $(document).ready(function() {
             });
         }
         else {
-            $("#reviewText").text("There are no reviews for this restroom yet")
+            // tell them theres no reviews yet
+            $("#reviewText").show();
+            $("#reviewText").text("There are currently no reviews for this restroom yet")
         }
     }
+    
+    
+    // all the info for the map
+      var features = [];
+    
+      function initMap() {
+          console.log("features: " + JSON.stringify(features))
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: new google.maps.LatLng(startLat, startLng),
+          mapTypeId: 'roadmap'
+        });
 
+        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+        var icons = {
+          info: {
+            icon: iconBase + 'info-i_maps.png'
+          }
+        };
+
+        // Create markers.
+        features.forEach(function(feature) {
+          var marker = new google.maps.Marker({
+            position: feature.position,
+            icon: icons[feature.type].icon,
+            map: map
+          });
+        });
+      }
+      
+ 
 });

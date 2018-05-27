@@ -6,6 +6,6 @@ module.exports = function(req, res, next) {
   }
 
   // If the user isnt' logged in, redirect them to the login page
-  // return res.redirect("/login");
-  alert("You must be logged in.")
+  return res.redirect("/login");
+  // alert("You must be logged in.")
 };

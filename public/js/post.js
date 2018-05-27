@@ -114,6 +114,7 @@ $(document).ready(function() {
                     establishment: establishment,
                 }; // new bathroom to submit
                 submitBathroom(newBathroom);
+                $("#bathRoomModal").modal('close');
             }
             else { // tell them it already exists
                 alert("there is already a thread for this facility");
@@ -434,13 +435,15 @@ $(document).ready(function() {
         if (data.length != 0) {
             data.forEach(function(result) {
                 // convert formatted date to something legible
-                let formattedDate = data.createdAt
+                console.log("created at: " + result.createdAt)
+                var formattedDate = new Date(result.createdAt);
+                formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
+                console.log("formatted date: " + formattedDate)
                 let image = result.image;
-                if (result.image != "" || result.image != undefined) {
+                if (result.image === "" || result.image === undefined) {
                     image = "./images/noImage.png";
                 }
-                    
-                formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
+             
                 var div = $("<div>").append(
                     "<div class='card'>" + "<div class='card-content'>" +
                     "<div class='row'><div class='col l6 m5 s12'>" +

@@ -71,6 +71,7 @@ input[type="checkbox"]:focus + label::before {
     }
     
     .viewReviews {
-    margin-left: 3%;
+    margin-left: 0%;
+    margin-top: 2%;
 }
 }

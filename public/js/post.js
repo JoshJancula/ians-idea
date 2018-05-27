@@ -78,48 +78,48 @@ $(document).ready(function() {
     function addBathroom() {
         let closeEnough = $('#areYouClose').val()
         if (closeEnough === "Yes") {
-        var alreadyExists = false;
-        // check the location against other locations
-        $.get('/api/bathrooms', function(data) {
-            let currentType = $("#sex").val();
-            for (let i = 0; i < data.length; i++) {
-                let resultLatLng = JSON.parse(data[i].location)
-                let resultLat = resultLatLng.lat
-                let resultLng = resultLatLng.lng
-                let d = distance(startLng, startLat, resultLng, resultLat)
-                let restroomType = data[i].sex;
-                // if we are in the same location and theres already an existing bathroom for that gender
-                if (d < (0.02 * 1.60934) && restroomType === currentType) {
-                    let obj = data[i]
-                    let miles = (d * 0.621371).toFixed(2)
-                    obj["distance"] = miles
-                    alreadyExists = true;
+            var alreadyExists = false;
+            // check the location against other locations
+            $.get('/api/bathrooms', function(data) {
+                let currentType = $("#sex").val();
+                for (let i = 0; i < data.length; i++) {
+                    let resultLatLng = JSON.parse(data[i].location)
+                    let resultLat = resultLatLng.lat
+                    let resultLng = resultLatLng.lng
+                    let d = distance(startLng, startLat, resultLng, resultLat)
+                    let restroomType = data[i].sex;
+                    // if we are in the same location and theres already an existing bathroom for that gender
+                    if (d < (0.02 * 1.60934) && restroomType === currentType) {
+                        let obj = data[i]
+                        let miles = (d * 0.621371).toFixed(2)
+                        obj["distance"] = miles
+                        alreadyExists = true;
+                    }
                 }
-            }
-        }).done(function() {
-            // it doesn't exist submit it
-            if (alreadyExists == false) {
-                let sex = $("#sex").val();
-                let department = $("#department").val().trim();
-                let dividers = $("#dividers").val();
-                let table = $("#hasChangingTable").val();
-                let establishment = $("#establishment").val().trim();
-                // new bathroom data
-                let newBathroom = {
-                    location: userAddress,
-                    sex: sex,
-                    dividers: dividers,
-                    department: department,
-                    table: table,
-                    establishment: establishment,
-                }; // new bathroom to submit
-                submitBathroom(newBathroom);
-                $("#bathRoomModal").modal('close');
-            }
-            else { // tell them it already exists
-                alert("there is already a thread for this facility");
-            }
-        })
+            }).done(function() {
+                // it doesn't exist submit it
+                if (alreadyExists == false) {
+                    let sex = $("#sex").val();
+                    let department = $("#department").val().trim();
+                    let dividers = $("#dividers").val();
+                    let table = $("#hasChangingTable").val();
+                    let establishment = $("#establishment").val().trim();
+                    // new bathroom data
+                    let newBathroom = {
+                        location: userAddress,
+                        sex: sex,
+                        dividers: dividers,
+                        department: department,
+                        table: table,
+                        establishment: establishment,
+                    }; // new bathroom to submit
+                    submitBathroom(newBathroom);
+                    $("#bathRoomModal").modal('close');
+                }
+                else { // tell them it already exists
+                    alert("there is already a thread for this facility");
+                }
+            })
         }
         else {
             alert("Please only create restrooms inside the restroom or within 20-30 feet of the facility to help insure map accuracy.")
@@ -339,20 +339,24 @@ $(document).ready(function() {
                 let resultLatLng = JSON.parse(result.location)
                 let resultLat = resultLatLng.lat
                 let resultLng = resultLatLng.lng
+                let labelText;
                 let icon;
                 if (result.sex === "Men") {
-                    icon = "men"
+                    labelText = result.establishment + "(M)";
+                    icon = "men";
                 }
                 if (result.sex === "Women") {
-                    icon = "women"
+                    labelText = result.establishment + "(W)";
+                    icon = "women";
                 }
                 if (result.sex === "Family/ Unisex") {
-                    icon = "unisex"
+                    labelText = result.establishment + "(U)";
+                    icon = "unisex";
                 }
 
                 let newFeature = { // get this location for map
                     position: new google.maps.LatLng(resultLat, resultLng),
-                    label: result.establishment,
+                    label: labelText,
                     type: icon
                 } // add to list of locations
                 features.push(newFeature);
@@ -443,7 +447,7 @@ $(document).ready(function() {
                 if (result.image === "" || result.image === undefined) {
                     image = "./images/noImage.png";
                 }
-             
+
                 var div = $("<div>").append(
                     "<div class='card'>" + "<div class='card-content'>" +
                     "<div class='row'><div class='col l6 m5 s12'>" +
@@ -461,7 +465,7 @@ $(document).ready(function() {
                 );
                 $("#reviewsHere").append(div);
                 //End for loop
-                
+
             });
         }
         else {
@@ -476,7 +480,7 @@ $(document).ready(function() {
     var features = [];
 
     function initMap() {
-        
+
         console.log("features: " + JSON.stringify(features))
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 16,
@@ -484,29 +488,36 @@ $(document).ready(function() {
             mapTypeId: 'roadmap'
         });
         const iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-      
+
         const icons = {
             info: {
                 icon: iconBase + 'info-i_maps.png'
             },
             unisex: {
-                icon: "./images/toilet.svg"
+                icon: "map-icon-toilet"
             },
             women: {
-                icon: './images/female.svg'
+                icon: "map-icon-female"
             },
             men: {
-                icon: './images/male.svg'
+                icon: "map-icon-male"
             }
-
         };
+        
         // Create markers.
         features.forEach(function(feature) {
             console.log("feature in forEach: " + JSON.stringify(feature))
             let marker = new google.maps.Marker({
                 position: feature.position,
                 label: feature.label,
-                icon: icons[feature.type].icon,
+                icon: {
+                    path: "M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z",
+                    fillColor: "red",
+                    fillOpacity: 1,
+                    strokeColor: '',
+                    strokeWeight: 0
+                },
+                map_icon_label: "<span class='map-icon " + icons[feature.type].icon + " '></span>",
                 map: map
             });
         });

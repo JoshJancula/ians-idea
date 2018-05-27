@@ -33,17 +33,6 @@ $(document).ready(function() {
     });
   }
 
-
-  // button to logout
-  $("#logout").on("click", function(event) {
-    // event.preventDefault();
-    $.get("/logout", function(data) {
-      window.location.href = '/login';
-    });
-  });
-
-
-
   // when the user forgets password
   $("#getPassword").on("click", function() {
     event.preventDefault();

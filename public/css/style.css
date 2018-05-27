@@ -42,13 +42,15 @@ input[type="checkbox"]:focus + label::before {
 }
 
 #map {
-        height: 100%;
+        height: 400px;
+        display: block;
       }
 
 
 /*  this is for tablets */
-@media screen and (max-width: 980px) and (min-width: 667px) and (-webkit-min-device-pixel-ratio: 2){
+@media screen and (max-width: 980px) and (min-width: 60px) and (-webkit-min-device-pixel-ratio: 2){
     
+   
     
 }
 
@@ -59,5 +61,12 @@ input[type="checkbox"]:focus + label::before {
 /*  this is for phones */
 @media screen and (max-width: 600px) and (min-width: 250px) and (-webkit-min-device-pixel-ratio: 2){
     
+    .locationCard {
+        text-align: center;
+    }
+    
+    .searchImage {
+        margin-top: 2%;
+    }
     
 }

@@ -75,6 +75,17 @@
                 <div class="row">
 
                     <form class="col m12">
+                         <div class="row">
+                            <div class="col s12 browser-default">
+                            
+                                <select id="areYouClose" class="white-text">
+                                  <option value="" disabled selected>Are you in the restroom or within a 30 foot proximity of this facility?</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col s12 browser-default">
                                 <select id="sex" class="white-text" onchange="checkSex()">
@@ -270,8 +281,8 @@
                 <h5 class="white-text">IN ORDER TO CREATE AN ACCOUNT YOU MUST AGREE TO THE FOLLOWING TERMS AND CONDITIONS: <span class="accountInfo"></span></h5>
                 <p class="white-text">
                     <ul>
-                        <li class="white-text">You agree to blah blah blah blah blah</li>
-                        <li class="white-text">You also agree to blah and just a little more blah</li>
+                        <li class="white-text">Where-2-Poo is an open source network so please if you are creating a new restroom for our database, please, please, please, either be inside the restroom or within a close proximity. This will insure accuracy for our geotracking so that other users may locate the restroom on a map. It doesn't help if you create the bathroom after driving 5 minutes down the road. You can always create the restroom and then go back to write your review but please this cannot be stressed enough, ONLY create new restrooms within a 20 - 30 foot proximity of the restroom itself.</li>
+                        <li class="white-text">Thanks for helping grow Where-2-Poo, Happy Dumping!</li>
                     </ul>
                 </p>
                 <span class="accountInfo"></span></p>
@@ -330,10 +341,15 @@
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJKypJQC2GoMDHQg2RXtTVSjc54ljmUMQ&libraries=places"></script>
+   
     <script src="./js/post.js"></script>
     <script src="./js/login.js"></script>
     <script src="./js/register.js"></script>
+    
+    
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfdlz5KnJ_YTspgA0zoOYXh9MueUejrJY&libraries=places"> </script>
+    
+    <!--<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyCJKypJQC2GoMDHQg2RXtTVSjc54ljmUMQ"></script>-->
 
 
     <script>
@@ -348,10 +364,8 @@
             $('#reviewsModal').modal();
             $('select').material_select();
         });
-    </script>
-
-    <script>
-        function checkSex() {
+        
+         function checkSex() {
             let x = document.getElementById("sex").value;
             if (x === "Men") {
                 $("#dividerRow").show();
@@ -369,6 +383,8 @@
             }
         }
     </script>
+
+   
 </body>
 
 </html>

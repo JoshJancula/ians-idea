@@ -77,63 +77,63 @@ $(document).ready(function() {
     // creates a new bathroom location
     function addBathroom() {
         let closeEnough = $('#areYouClose').val()
-         $.get("api/user_data", {}, function(data) {}).done(function(data) {
-             var id = data.id;
-         if (!id || id === "undefined") {
-            $("#loginModal").modal('open');
-            console.log('you are not logged in')
-        }
-        else {
-        if (closeEnough === "Yes") {
-            var alreadyExists = false;
-            // check the location against other locations
-            $.get('/api/bathrooms', function(data) {
-                let currentType = $("#sex").val();
-                for (let i = 0; i < data.length; i++) {
-                    let resultLatLng = JSON.parse(data[i].location)
-                    let resultLat = resultLatLng.lat
-                    let resultLng = resultLatLng.lng
-                    let d = distance(startLng, startLat, resultLng, resultLat)
-                    let restroomType = data[i].sex;
-                    // if we are in the same location and theres already an existing bathroom for that gender
-                    if (d < (0.02 * 1.60934) && restroomType === currentType) {
-                        let obj = data[i]
-                        let miles = (d * 0.621371).toFixed(2)
-                        obj["distance"] = miles
-                        alreadyExists = true;
-                    }
+        $.get("api/user_data", {}, function(data) {}).done(function(data) {
+            var id = data.id;
+            if (!id || id === "undefined") {
+                $("#loginModal").modal('open');
+                console.log('you are not logged in')
+            }
+            else {
+                if (closeEnough === "Yes") {
+                    var alreadyExists = false;
+                    // check the location against other locations
+                    $.get('/api/bathrooms', function(data) {
+                        let currentType = $("#sex").val();
+                        for (let i = 0; i < data.length; i++) {
+                            let resultLatLng = JSON.parse(data[i].location)
+                            let resultLat = resultLatLng.lat
+                            let resultLng = resultLatLng.lng
+                            let d = distance(startLng, startLat, resultLng, resultLat)
+                            let restroomType = data[i].sex;
+                            // if we are in the same location and theres already an existing bathroom for that gender
+                            if (d < (0.02 * 1.60934) && restroomType === currentType) {
+                                let obj = data[i]
+                                let miles = (d * 0.621371).toFixed(2)
+                                obj["distance"] = miles
+                                alreadyExists = true;
+                            }
+                        }
+                    }).done(function() {
+                        // it doesn't exist submit it
+                        if (alreadyExists == false) {
+                            let sex = $("#sex").val();
+                            let department = $("#department").val().trim();
+                            let dividers = $("#dividers").val();
+                            let table = $("#hasChangingTable").val();
+                            let establishment = $("#establishment").val().trim();
+                            // new bathroom data
+                            let newBathroom = {
+                                location: userAddress,
+                                sex: sex,
+                                dividers: dividers,
+                                department: department,
+                                table: table,
+                                establishment: establishment,
+                                createdBy: id
+                            }; // new bathroom to submit
+                            submitBathroom(newBathroom);
+                            $("#bathRoomModal").modal('close');
+                        }
+                        else { // tell them it already exists
+                            alert("there is already a thread for this facility");
+                        }
+                    })
                 }
-            }).done(function() {
-                // it doesn't exist submit it
-                if (alreadyExists == false) {
-                    let sex = $("#sex").val();
-                    let department = $("#department").val().trim();
-                    let dividers = $("#dividers").val();
-                    let table = $("#hasChangingTable").val();
-                    let establishment = $("#establishment").val().trim();
-                    // new bathroom data
-                    let newBathroom = {
-                        location: userAddress,
-                        sex: sex,
-                        dividers: dividers,
-                        department: department,
-                        table: table,
-                        establishment: establishment,
-                        createdBy: id
-                    }; // new bathroom to submit
-                    submitBathroom(newBathroom);
-                    $("#bathRoomModal").modal('close');
+                else {
+                    alert("Please only create restrooms inside the restroom or within 20-30 feet of the facility to help insure map accuracy.")
                 }
-                else { // tell them it already exists
-                    alert("there is already a thread for this facility");
-                }
-            })
-        }
-        else {
-            alert("Please only create restrooms inside the restroom or within 20-30 feet of the facility to help insure map accuracy.")
-        }
-        }
-         });
+            }
+        });
     }
     // button handles submitting the new bathroom
     $("#submitBathroom").on('click', addBathroom);
@@ -374,10 +374,14 @@ $(document).ready(function() {
                 let ratingTotal = 0; // get the ratings from the posts
                 let posts = result.Posts;
                 let averageRating;
+                let lastReview;
                 // if there are posts to pull from...
                 if (posts.length != 0) {
                     // get last post
                     let lastPost = posts.length - 1;
+                   
+                    lastReview = new Date(posts.createdAt);
+                    lastReview = moment(lastReview).format("MMMM Do YYYY, h:mm:ss a");
                     // image is most recent uploaded photo of that facility
                     image = posts[lastPost].image;
                     for (let i = 0; i < posts.length; i++) {
@@ -387,8 +391,9 @@ $(document).ready(function() {
                     averageRating = Math.round(ratingTotal / posts.length);
                 }
                 else { // if there aren't any...
-                    image = "./images/noImage.png"
-                    averageRating = "There are currently no reviews or ratings for this restroom."
+                    image = "./images/noImage.png";
+                    averageRating = "There are currently no reviews or ratings for this restroom.";
+                    lastReview = "";
                 }
                 if (result.sex != "Men") { // if its not the mens room
                     var div = $("<div>").append( // display this
@@ -397,6 +402,7 @@ $(document).ready(function() {
                         "<h5>Establishment: " + result.establishment + "</h5>" +
                         "<p> Average Rating: " + averageRating + "</p>" +
                         "<p> Floor/ Department:  " + result.department + "</p>" +
+                        "<p> Last Reviewed on: " + lastReview + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
                         "<p> Changing Table: " + result.table + "</p>" +
                         "<p> Distance: " + result.distance + "</p>" +
@@ -420,6 +426,7 @@ $(document).ready(function() {
                         "<h5>Establishment: " + result.establishment + "</h5>" +
                         "<p> Average Rating: " + averageRating + " Stars</p>" +
                         "<p> Floor/ Department:  " + result.department + "</p>" +
+                        "<p> Last Reviewed on: " + lastReview + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
                         "<p> Urinal Dividers: " + result.dividers + "</p>" +
                         "<p> Changing Table: " + result.table + "</p>" +
@@ -467,7 +474,7 @@ $(document).ready(function() {
                     "<p> Reviewed by: " + result.username + "</p>" +
                     "<p> Reviewed on: " + formattedDate + "</p>" +
                     "</div><div class='col l6 m7 s12'>" +
-                    "<img class='bathroomImage' id='searchImage' src=" + image + ">" +
+                    "<img class='searchImage' id='searchImage' src=" + image + ">" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -513,7 +520,7 @@ $(document).ready(function() {
                 icon: "map-icon-male"
             }
         };
-        
+
         // Create markers.
         features.forEach(function(feature) {
             console.log("feature in forEach: " + JSON.stringify(feature))

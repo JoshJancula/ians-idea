@@ -22,6 +22,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       len: [1]
     },
+    soHorrible: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      len: [1]
+    },
     image: {
       type: DataTypes.STRING,
       allowNull: true,

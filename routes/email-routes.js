@@ -13,7 +13,7 @@ var smtpTransport = nodemailer.createTransport({
 module.exports = function(app, flag) {
     
 app.get('/',function(req,res){
-    res.sendfile('contact.html');
+    res.sendfile('main.html');
 });
 app.get('/send',function(req,res){
     var mailOptions={

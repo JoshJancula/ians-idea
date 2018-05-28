@@ -1,12 +1,22 @@
 $(document).ready(function() {
     $("#searchBathroom").hide();
     $("#dividerRow").hide();
+    $("#horribleRow").hide();
+
     $('#postModal').modal({
         ready: function(modal, trigger) {
             // gets the post that this belongs to 
             modal.find('#postTo').text(trigger.data('id'));
         }
     });
+
+    $('#reportModal').modal({
+        ready: function(modal, trigger) {
+            // gets the post that this belongs to 
+            modal.find('#reportThis').text(trigger.data('id'));
+        }
+    });
+
 
     var config = {
         apiKey: "AIzaSyDfdlz5KnJ_YTspgA0zoOYXh9MueUejrJY",
@@ -379,7 +389,7 @@ $(document).ready(function() {
                 if (posts.length != 0) {
                     // get last post
                     let lastPost = posts.length - 1;
-                   
+
                     lastReview = new Date(posts.createdAt);
                     lastReview = moment(lastReview).format("MMMM Do YYYY, h:mm:ss a");
                     // image is most recent uploaded photo of that facility
@@ -407,7 +417,8 @@ $(document).ready(function() {
                         "<p> Changing Table: " + result.table + "</p>" +
                         "<p> Distance: " + result.distance + "</p>" +
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
-                        "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button>" +
+                        "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
+                        "<a data-target='reportModal' class='modal-trigger reportBathroom'  data-id='" + result.id + "'>Report</a>" +
                         "</div>" +
                         "<div class='col l6 m5 s12'>" + "<img class='searchImage' id='searchImage' src=" + image + " />" +
                         "</div>" +
@@ -432,7 +443,8 @@ $(document).ready(function() {
                         "<p> Changing Table: " + result.table + "</p>" +
                         "<p> Distance: " + result.distance + "</p>" +
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
-                        "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button>" +
+                        "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
+                        "<a data-target='reportModal' class='modal-trigger reportBathroom'  data-id='" + result.id + "'>Report</a>" +
                         "</div>" +
                         "<div class='col l6 m5 s12'>" + "<img class='searchImage' id='searchImage' src=" + image + " />" +
                         "</div>" +
@@ -473,6 +485,7 @@ $(document).ready(function() {
                     "<p> Review: " + result.comment + "</p>" +
                     "<p> Reviewed by: " + result.username + "</p>" +
                     "<p> Reviewed on: " + formattedDate + "</p>" +
+                    "<a data-target='reportModal' class='modal-trigger reportReview'  data-id='" + result.id + "'>Report</a>" +
                     "</div><div class='col l6 m7 s12'>" +
                     "<img class='searchImage' id='searchImage' src=" + image + ">" +
                     "</div>" +
@@ -492,6 +505,59 @@ $(document).ready(function() {
         }
     }
 
+
+   
+      // reporting 
+    $(document).on("click", "#submitReport", function() {
+        let message = $('#reason').val().trim();
+        let offendor = $('#reportThis').text();
+        let type = $('#reportType').val().trim();
+        let reportedData = {
+            type: type,
+            offendor: offendor,
+            message: message
+        }
+        submitReport(reportedData)
+    });
+
+
+
+
+    function submitReport(data) {
+        let type = data.type;
+        let offendor = data.offendor;
+        let message = data.message;
+        
+        $.get("api/user_data", {}, function(data) {}).done(function(data) {
+            var plantiff = data.username;
+            if (!plantiff || plantiff === "undefined") {
+                $("#loginModal").modal('open');
+            }
+            else {
+                // send the message
+                $.get("/send", {
+                        to: "jamclashwebpage@gmail.com",
+                        subject: "Reported",
+                        html: "<ul>" +
+                            "<li>Reporting: " + type + "</li>" +
+                            "<li>Reported ID: " + offendor + "</li>" +
+                            "<li>Reported by: " + plantiff + "</li>" +
+                            "<li>Reason for reporting: " + message + "</li>" +
+                            "</ul>"
+                    },
+                    function(data) {
+                        if (data == "sent") {
+                            console.log("Great Success!");
+                            // close the modal 
+                            $('#reportModal').modal('close');
+                            // clear text box
+                            $("#reason").val("");
+                        }
+                    });
+            }
+
+        });
+    }
 
     // all the info for the map
     var features = [];

@@ -77,6 +77,13 @@ $(document).ready(function() {
     // creates a new bathroom location
     function addBathroom() {
         let closeEnough = $('#areYouClose').val()
+         $.get("api/user_data", {}, function(data) {}).done(function(data) {
+             var id = data.id;
+         if (!id || id === "undefined") {
+            $("#loginModal").modal('open');
+            console.log('you are not logged in')
+        }
+        else {
         if (closeEnough === "Yes") {
             var alreadyExists = false;
             // check the location against other locations
@@ -112,6 +119,7 @@ $(document).ready(function() {
                         department: department,
                         table: table,
                         establishment: establishment,
+                        createdBy: id
                     }; // new bathroom to submit
                     submitBathroom(newBathroom);
                     $("#bathRoomModal").modal('close');
@@ -124,6 +132,8 @@ $(document).ready(function() {
         else {
             alert("Please only create restrooms inside the restroom or within 20-30 feet of the facility to help insure map accuracy.")
         }
+        }
+         });
     }
     // button handles submitting the new bathroom
     $("#submitBathroom").on('click', addBathroom);

@@ -33,6 +33,11 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING,
          unique: false,
         allowNull: false,
+    },
+    createdBy: { 
+        type: DataTypes.STRING,
+         unique: false,
+        allowNull: false,
     }
     
   });

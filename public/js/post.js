@@ -265,6 +265,7 @@ $(document).ready(function() {
             $("#check1").prop("checked", false);
             $("#check2").prop("checked", false);
             $("#check3").prop("checked", false);
+            location.hash = "#scrollHere";
         });
     });
 

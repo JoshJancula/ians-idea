@@ -1,8 +1,11 @@
 $(document).ready(function() {
+    
+    // hide this stuff on load
     $("#searchBathroom").hide();
     $("#dividerRow").hide();
     $("#horribleRow").hide();
 
+    //initialize these modals
     $('#postModal').modal({
         ready: function(modal, trigger) {
             // gets the post that this belongs to 
@@ -17,7 +20,7 @@ $(document).ready(function() {
         }
     });
 
-
+    // firebase config variables
     var config = {
         apiKey: "AIzaSyDfdlz5KnJ_YTspgA0zoOYXh9MueUejrJY",
         authDomain: "where-2-poo.firebaseapp.com",
@@ -25,9 +28,10 @@ $(document).ready(function() {
         projectId: "where-2-poo",
         storageBucket: "where-2-poo.appspot.com",
         messagingSenderId: "622144128093"
-    };
+    };// initialize firebase
     firebase.initializeApp(config);
 
+    // globals
     var userAddress;
     var myLatLng;
     var fileType;
@@ -49,6 +53,7 @@ $(document).ready(function() {
         file = input.files[0];
         fileType = file["type"];
         fileName = file.name
+        // check the file type
         checkType(fileType);
     }
 
@@ -56,13 +61,13 @@ $(document).ready(function() {
     // function gets the user location 
     function getLocation() {
         function showPosition(position) {
-            console.log("getting location")
             startLat = position.coords.latitude;
             startLng = position.coords.longitude;
             myLatLng = { lat: startLat, lng: startLng }
             userAddress = JSON.stringify(myLatLng)
             //Once the user's address is saved in the userAddress variable, call the initMap function to load the map
             console.log(myLatLng)
+            // show the search button once we have info
             $("#searchBathroom").show();
         };
         //if geolocation is supported, the getCurrentPosition will be called
@@ -88,12 +93,11 @@ $(document).ready(function() {
     function addBathroom() {
         let closeEnough = $('#areYouClose').val()
         $.get("api/user_data", {}, function(data) {}).done(function(data) {
-            var id = data.id;
+            var id = data.id; // must be logged in so we know who created it
             if (!id || id === "undefined") {
                 $("#loginModal").modal('open');
-                console.log('you are not logged in')
             }
-            else {
+            else { // verify they're close enough 
                 if (closeEnough === "Yes") {
                     var alreadyExists = false;
                     // check the location against other locations
@@ -105,8 +109,8 @@ $(document).ready(function() {
                             let resultLng = resultLatLng.lng
                             let d = distance(startLng, startLat, resultLng, resultLat)
                             let restroomType = data[i].sex;
-                            // if we are in the same location and theres already an existing bathroom for that gender
-                            if (d < (0.02 * 1.60934) && restroomType === currentType) {
+                            // check to make sure theres not a restroom already created 
+                            if (d < (0.03 * 1.60934) && restroomType === currentType) {
                                 let obj = data[i]
                                 let miles = (d * 0.621371).toFixed(2)
                                 obj["distance"] = miles
@@ -130,16 +134,22 @@ $(document).ready(function() {
                                 table: table,
                                 establishment: establishment,
                                 createdBy: id
-                            }; // new bathroom to submit
-                            submitBathroom(newBathroom);
-                            $("#bathRoomModal").modal('close');
+                            }; // if they didn't complete the form ...
+                            if (!sex || !department || !table || !establishment) {
+                                alert("Please complete the form.");
+                                return;
+                            }
+                            else { // submit the bathroom
+                                submitBathroom(newBathroom);
+                                $("#bathRoomModal").modal('close');
+                            }
                         }
                         else { // tell them it already exists
                             alert("there is already a thread for this facility");
                         }
                     })
                 }
-                else {
+                else { // tell them we only want new restrooms created close by
                     alert("Please only create restrooms inside the restroom or within 20-30 feet of the facility to help insure map accuracy.")
                 }
             }
@@ -153,7 +163,6 @@ $(document).ready(function() {
         let id;
         let username;
         let bathroomId = $("#postTo").text();
-        console.log("bathroomId to be posted: " + bathroomId)
         let rating = $("#rating").val().trim();
         let comment = $("#comment").val().trim();
         let airQuality = $("#airQuality").val();
@@ -172,10 +181,9 @@ $(document).ready(function() {
                 image: image,
                 bathUserId: id,
                 BathroomId: bathroomId
-            };
+            }; // make sure they are logged in
             if (!id || id === "undefined") {
                 $("#loginModal").modal('open');
-                console.log('you are not logged in')
             }
             // Don't submit unless theres a rating at least
             else if (!rating) {
@@ -187,7 +195,6 @@ $(document).ready(function() {
                 return;
             } // if there is no file just submit message
             else if (fileName == undefined && acceptable == false) {
-
                 submitPost(newPost)
                 // clear fields
                 $("#rating").val("");
@@ -195,7 +202,7 @@ $(document).ready(function() {
                 $("#image").val("");
                 $("#postTo").val("");
                 $("#postModal").modal('close');
-            } // if there is a file
+            }
             else {
                 let newPost = {
                     rating: rating,
@@ -205,7 +212,7 @@ $(document).ready(function() {
                     image: image,
                     bathUserId: id,
                     BathroomId: bathroomId
-                };
+                }; // upload the image to firebase and then submit post
                 uploadToFirebase(file, fileName, newPost);
                 // clear fields
                 $("#rating").val("");
@@ -242,25 +249,22 @@ $(document).ready(function() {
                 sex: ["Women", "Family/ Unisex", "Men"]
             }
         }
-
+        // search for the bathroom
         $.get('/api/bathrooms/search', params, function(data) {
             let newData = []
             for (let i = 0; i < data.length; i++) {
                 let resultLatLng = JSON.parse(data[i].location)
                 let resultLat = resultLatLng.lat
                 let resultLng = resultLatLng.lng
-
-                let d = distance(startLng, startLat, resultLng, resultLat)
-                console.log("distance from click user")
-                console.log(d)
+                let d = distance(startLng, startLat, resultLng, resultLat);
+                // get bathrooms within 5 miles
                 if (d < (5 * 1.60934)) {
                     let obj = data[i]
                     let miles = (d * 0.621371).toFixed(2)
                     obj["distance"] = miles
                     newData.push(obj)
                 }
-            }
-            console.log("data retruned from searchBathroom: " + newData);
+            } // call renderLocations and clear check boxes
             renderLocations(newData);
             $("#check1").prop("checked", false);
             $("#check2").prop("checked", false);
@@ -271,16 +275,19 @@ $(document).ready(function() {
 
     // when you click on the view reviews button
     $(document).on("click", '.viewReviews', function(event) {
+        // get the data-id and pass it to getReviews
         let id = $(this).attr('data-id');
-        console.log("clicked on .viewReviews, id= " + id)
         getReviews(id);
     });
 
+    // function to get reviews
     function getReviews(id) {
         $.get("api/bathrooms/" + id, function(data) {
+            // grab posts from the data returned
             let posts = data.Posts;
+            // empty reviewsHere
             $("#reviewsHere").empty();
-            console.log("posts to be passed: " + JSON.stringify(posts))
+            // call renderReviews and pass in the posts
             renderReviews(posts);
         });
     }
@@ -289,14 +296,14 @@ $(document).ready(function() {
     // submits the post
     function submitPost(post, downloadUrl) {
         $.post("/api/posts", post, function() {
-            console.log("post successful")
+            console.log("post successful");
         });
     }
 
     // submits the post
     function submitBathroom(bathroom) {
         $.post("/api/bathrooms", bathroom, function() {
-            console.log("bathroom successfully created")
+            console.log("bathroom successfully created");
         });
     }
 
@@ -308,13 +315,16 @@ $(document).ready(function() {
 
     // checks the type of file user input
     function checkType(fileType) {
+        // loop thru extension types 
         for (let i = 0; i < validFileExtensions.length; i++) {
             if (fileType === validFileExtensions[i]) {
+                // if it matches one then its cool to post
                 acceptable = true
             }
         }
     }
 
+    // function to calculate distance
     function distance(startLng, startLat, lon2, lat2, cb) {
         var R = 6371; // Radius of the earth in km
         var dLat = (lat2 - startLat).toRad(); // Javascript functions in radians
@@ -324,7 +334,6 @@ $(document).ready(function() {
             Math.sin(dLon / 2) * Math.sin(dLon / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         var d = R * c; // Distance in km
-        console.log("Distance to user:")
         console.log(d)
         return d;
     }
@@ -333,9 +342,9 @@ $(document).ready(function() {
     // function submits image to firebase
     function uploadToFirebase(file, fileName, newPost) { // submit image
         var storageRef = firebase.storage().ref('/bathroomPhotos/' + fileName);
-        var uploadTask = storageRef.put(file) // gets link to image
+        var uploadTask = storageRef.put(file); // gets link to image
         uploadTask.on('state_changed', function(snapshot) {}, function(error) {}, function() {
-            console.log("downloadUrl: " + uploadTask.snapshot.downloadURL)
+            // get the download URL and pass it in to complete submitting post
             downloadUrl = uploadTask.snapshot.downloadURL;
             let postWithImage = {
                 rating: newPost.rating,
@@ -345,7 +354,7 @@ $(document).ready(function() {
                 image: downloadUrl,
                 bathUserId: newPost.bathUserId,
                 BathroomId: newPost.BathroomId
-            }
+            } // submit post with download link
             submitPost(postWithImage);
         })
     }
@@ -358,18 +367,19 @@ $(document).ready(function() {
         if (data.length != 0) {
             data.forEach(function(result) {
                 let resultLatLng = JSON.parse(result.location)
-                let resultLat = resultLatLng.lat
-                let resultLng = resultLatLng.lng
+                let resultLat = resultLatLng.lat;
+                let resultLng = resultLatLng.lng;
                 let labelText;
                 let icon;
+                // if its mens room
                 if (result.sex === "Men") {
                     labelText = result.establishment + "(M)";
                     icon = "men";
-                }
+                } // if its womens room
                 if (result.sex === "Women") {
                     labelText = result.establishment + "(W)";
                     icon = "women";
-                }
+                } // if its unisex or family restroom
                 if (result.sex === "Family/ Unisex") {
                     labelText = result.establishment + "(U)";
                     icon = "unisex";
@@ -418,7 +428,7 @@ $(document).ready(function() {
                         "<p> Distance: " + result.distance + "</p>" +
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button><br>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
-                         "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
+                        "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
 
                         "</div>" +
                         "<div class='col l6 m5 s12 center'>" + "<img class='searchImage' id='searchImage' src=" + image + " />" +
@@ -445,7 +455,7 @@ $(document).ready(function() {
                         "<p> Distance: " + result.distance + "</p>" +
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button><br>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
-                         "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
+                        "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
                         "</div>" +
                         "<div class='col l6 m5 s12 center'>" + "<img class='searchImage' id='searchImage' src=" + image + " /><br>" +
                         "</div>" +
@@ -471,8 +481,7 @@ $(document).ready(function() {
                 // convert formatted date to something legible
                 var formattedDate = new Date(result.createdAt);
                 formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
-                console.log("formatted date: " + formattedDate)
-                let image = result.image;
+                let image = result.image; // if theres not an image use this one
                 if (result.image === "" || result.image === undefined) {
                     image = "./images/noImage.png";
                 }
@@ -508,6 +517,7 @@ $(document).ready(function() {
 
     // reporting click handler
     $(document).on("click", "submitReport", function() {
+        // get info out of the modal
         let message = $('#reason').val().trim();
         let offendor = $('#reportThis').text();
         let type = $('#reportType').val().trim();
@@ -515,7 +525,7 @@ $(document).ready(function() {
             type: type,
             offendor: offendor,
             message: message
-        }
+        } // submit the report
         submitReport(reportedData)
     });
 
@@ -534,6 +544,7 @@ $(document).ready(function() {
 
         $.get("api/user_data", {}, function(data) {}).done(function(data) {
             var plantiff = data.username;
+            // if they aren't logged in then they can't report it, we track snitches
             if (!plantiff || plantiff === "undefined") {
                 $("#loginModal").modal('open');
             }
@@ -592,7 +603,7 @@ $(document).ready(function() {
         };
 
         // Create markers.
-        features.forEach(function(feature) {
+        features.forEach(function(feature) { // do this for each feature
             console.log("feature in forEach: " + JSON.stringify(feature))
             let marker = new google.maps.Marker({
                 position: feature.position,

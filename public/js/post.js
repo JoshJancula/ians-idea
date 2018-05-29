@@ -390,8 +390,7 @@ $(document).ready(function() {
                 if (posts.length != 0) {
                     // get last post
                     let lastPost = posts.length - 1;
-
-                    lastReview = new Date(posts.createdAt);
+                    lastReview = new Date(posts[lastPost].createdAt);
                     lastReview = moment(lastReview).format("MMMM Do YYYY, h:mm:ss a");
                     // image is most recent uploaded photo of that facility
                     image = posts[lastPost].image;
@@ -399,7 +398,7 @@ $(document).ready(function() {
                         let ratingVal = parseInt(posts[i].rating);
                         ratingTotal += ratingVal;
                     } // get the average from the ratings 
-                    averageRating = Math.round(ratingTotal / posts.length);
+                    averageRating = Math.round(ratingTotal / posts.length); + " Stars"
                 }
                 else { // if there aren't any...
                     image = "./images/noImage.png";
@@ -417,11 +416,12 @@ $(document).ready(function() {
                         "<p> Gender: " + result.sex + "</p>" +
                         "<p> Changing Table: " + result.table + "</p>" +
                         "<p> Distance: " + result.distance + "</p>" +
-                        "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
+                        "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button><br>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
-                        "<a data-target='reportModal' class='modal-trigger reportBathroom'  data-id='" + result.id + "'>Report</a>" +
+                         "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
+
                         "</div>" +
-                        "<div class='col l6 m5 s12'>" + "<img class='searchImage' id='searchImage' src=" + image + " />" +
+                        "<div class='col l6 m5 s12 center'>" + "<img class='searchImage' id='searchImage' src=" + image + " />" +
                         "</div>" +
                         "</div>" +
                         "</div>" +
@@ -436,18 +436,18 @@ $(document).ready(function() {
                         "<div class='card locationCard'>" + "<div class='card-content'>" +
                         "<div class='row'><div class='col l6 m7 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
-                        "<p> Average Rating: " + averageRating + " Stars</p>" +
+                        "<p> Average Rating: " + averageRating + "</p>" +
                         "<p> Floor/ Department:  " + result.department + "</p>" +
                         "<p> Last Reviewed on: " + lastReview + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
                         "<p> Urinal Dividers: " + result.dividers + "</p>" +
                         "<p> Changing Table: " + result.table + "</p>" +
                         "<p> Distance: " + result.distance + "</p>" +
-                        "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button>" +
+                        "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button><br>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
-                        "<a data-target='reportModal' class='modal-trigger reportBathroom'  data-id='" + result.id + "'>Report</a>" +
+                         "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
                         "</div>" +
-                        "<div class='col l6 m5 s12'>" + "<img class='searchImage' id='searchImage' src=" + image + " />" +
+                        "<div class='col l6 m5 s12 center'>" + "<img class='searchImage' id='searchImage' src=" + image + " /><br>" +
                         "</div>" +
                         "</div>" +
                         "</div>" +
@@ -469,7 +469,6 @@ $(document).ready(function() {
         if (data.length != 0) {
             data.forEach(function(result) {
                 // convert formatted date to something legible
-                console.log("created at: " + result.createdAt)
                 var formattedDate = new Date(result.createdAt);
                 formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
                 console.log("formatted date: " + formattedDate)
@@ -485,10 +484,10 @@ $(document).ready(function() {
                     "<p> Air Quality:  " + result.airQuality + "</p>" +
                     "<p> Review: " + result.comment + "</p>" +
                     "<p> Reviewed by: " + result.username + "</p>" +
-                    "<p> Reviewed on: " + formattedDate + "</p>" +
-                    "<a data-target='reportModal' class='modal-trigger reportReview'  data-id='" + result.id + "'>Report</a>" +
-                    "</div><div class='col l6 m7 s12'>" +
-                    "<img class='searchImage' id='searchImage' src=" + image + ">" +
+                    "<p> Reviewed on: " + formattedDate + "</p><br>" +
+                    "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
+                    "</div><div class='col l6 m7 s12 center'>" +
+                    "<img class='searchImage' id='searchImage' src=" + image + "><br>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -496,7 +495,6 @@ $(document).ready(function() {
                 );
                 $("#reviewsHere").append(div);
                 //End for loop
-
             });
         }
         else {
@@ -507,9 +505,9 @@ $(document).ready(function() {
     }
 
 
-   
-      // reporting 
-    $(document).on("click", "#submitReport", function() {
+
+    // reporting click handler
+    $(document).on("click", "submitReport", function() {
         let message = $('#reason').val().trim();
         let offendor = $('#reportThis').text();
         let type = $('#reportType').val().trim();
@@ -521,14 +519,19 @@ $(document).ready(function() {
         submitReport(reportedData)
     });
 
+    // when reporting close open modal
+    $(document).on("click", '.report', function() {
+        // close the roport modal
+        $("#reviewsModal").modal('close');
+    })
 
 
-
+    // function to submit a report 
     function submitReport(data) {
         let type = data.type;
         let offendor = data.offendor;
         let message = data.message;
-        
+
         $.get("api/user_data", {}, function(data) {}).done(function(data) {
             var plantiff = data.username;
             if (!plantiff || plantiff === "undefined") {

@@ -42,8 +42,16 @@ $(document).ready(function() {
         }
         else {
             // tell them theres no reviews yet
-            $("#cardArea").show();
-            $("#cardArea").text("You have not written any reviews yet.")
+            var div = $("<div>").append(
+                    "<div class='card'>" + "<div class='card-content'>" +
+                    "<div class='row'><div class='col l12 m12 s12'>" +
+                    "<h5>You have not written any reviews.</h5>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+                $("#cardArea").append(div);
+         
         }
     }
     

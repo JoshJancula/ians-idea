@@ -435,7 +435,9 @@ $(document).ready(function() {
                         "<p> Department:  " + result.department + "</p>" +
                         "<p> Last Reviewed on: " + lastReview + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
+                        "<p> Seat Covers Provided: " + result.seatCover + "</p>" +
                         "<p> Changing Table: " + result.table + "</p>" +
+                        "<p> Recepticle for feminine hygeine products: " + result.tamponBox + "</p>" +
                         "<p> Distance: " + result.distance + "</p>" +
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button><br>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
@@ -462,6 +464,7 @@ $(document).ready(function() {
                         "<p> Department:  " + result.department + "</p>" +
                         "<p> Last Reviewed on: " + lastReview + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
+                        "<p> Seat Covers Provided: " + result.seatCover + "</p>" +
                         "<p> Urinal Dividers: " + result.dividers + "</p>" +
                         "<p> Changing Table: " + result.table + "</p>" +
                         "<p> Distance: " + result.distance + "</p>" +

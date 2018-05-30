@@ -103,14 +103,16 @@ $(document).ready(function() {
                     // check the location against other locations
                     $.get('/api/bathrooms', function(data) {
                         let currentType = $("#sex").val();
+                        let currentFloor = $("#floor").val();
                         for (let i = 0; i < data.length; i++) {
                             let resultLatLng = JSON.parse(data[i].location)
                             let resultLat = resultLatLng.lat
                             let resultLng = resultLatLng.lng
                             let d = distance(startLng, startLat, resultLng, resultLat)
                             let restroomType = data[i].sex;
+                            let floor = data[i].floor;
                             // check to make sure theres not a restroom already created 
-                            if (d < (0.03 * 1.60934) && restroomType === currentType) {
+                            if (d < (0.03 * 1.60934) && restroomType === currentType && currentFloor === floor) {
                                 let obj = data[i]
                                 let miles = (d * 0.621371).toFixed(2)
                                 obj["distance"] = miles
@@ -124,6 +126,7 @@ $(document).ready(function() {
                             let department = $("#department").val().trim();
                             let dividers = $("#dividers").val();
                             let table = $("#hasChangingTable").val();
+                            let floor = $("#floor").val();
                             let establishment = $("#establishment").val().trim();
                             // new bathroom data
                             let newBathroom = {
@@ -132,6 +135,7 @@ $(document).ready(function() {
                                 dividers: dividers,
                                 department: department,
                                 table: table,
+                                floor: floor,
                                 establishment: establishment,
                                 createdBy: id
                             }; // if they didn't complete the form ...
@@ -269,7 +273,8 @@ $(document).ready(function() {
             $("#check1").prop("checked", false);
             $("#check2").prop("checked", false);
             $("#check3").prop("checked", false);
-            location.hash = "#scrollHere";
+            window.location.hash = "#scrollHere";
+
         });
     });
 
@@ -421,7 +426,8 @@ $(document).ready(function() {
                         "<div class='row'><div class='col l6 m7 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
                         "<p> Average Rating: " + averageRating + "</p>" +
-                        "<p> Floor/ Department:  " + result.department + "</p>" +
+                        "<p> Floor:  " + result.floor + "</p>" +
+                        "<p> Department:  " + result.department + "</p>" +
                         "<p> Last Reviewed on: " + lastReview + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
                         "<p> Changing Table: " + result.table + "</p>" +
@@ -447,7 +453,8 @@ $(document).ready(function() {
                         "<div class='row'><div class='col l6 m7 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
                         "<p> Average Rating: " + averageRating + "</p>" +
-                        "<p> Floor/ Department:  " + result.department + "</p>" +
+                        "<p> Floor:  " + result.floor + "</p>" +
+                        "<p> Department:  " + result.department + "</p>" +
                         "<p> Last Reviewed on: " + lastReview + "</p>" +
                         "<p> Gender: " + result.sex + "</p>" +
                         "<p> Urinal Dividers: " + result.dividers + "</p>" +

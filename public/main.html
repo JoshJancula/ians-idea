@@ -106,6 +106,7 @@
                                 </select>
                             </div>
                         </div>
+                        
 
                         <div class="row">
                             <div class="input-field col l12 s12">
@@ -130,6 +131,24 @@
                             <div class="col s12 browser-default">
                                 <select id="hasChangingTable" class="white-text">
                                   <option value="" disabled selected>Is there a changing table?</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="row" id='tamponRow'>
+                            <div class="col s12 browser-default">
+                                <select id="tamponBox" class="white-text">
+                                  <option value="" disabled selected>Is there a repository for feminine hygeine porducts?</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row" id='seatCoverRow'>
+                            <div class="col s12 browser-default">
+                                <select id="seatCovers" class="white-text">
+                                  <option value="" disabled selected>Are there seat covers provided?</option>
                                   <option value="Yes">Yes</option>
                                   <option value="No">No</option>
                                 </select>
@@ -414,7 +433,13 @@
             if (x === "Men") {
                 $("#dividerRow").show();
             }
+            if (x === "Women") {
+                $("#tamponRow").show();
+            }
         }
+        
+        
+
 
         function selectOnlyThis(id) {
             for (var i = 1; i <= 3; i++) {

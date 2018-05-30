@@ -4,6 +4,7 @@ $(document).ready(function() {
     $("#searchBathroom").hide();
     $("#dividerRow").hide();
     $("#horribleRow").hide();
+    $("#tamponRow").hide();
 
     //initialize these modals
     $('#postModal').modal({
@@ -127,6 +128,8 @@ $(document).ready(function() {
                             let dividers = $("#dividers").val();
                             let table = $("#hasChangingTable").val();
                             let floor = $("#floor").val();
+                            let tamponBox = $("#tamponBox").val();
+                            let seatCovers = $("#seatCovers").val();
                             let establishment = $("#establishment").val().trim();
                             // new bathroom data
                             let newBathroom = {
@@ -135,11 +138,13 @@ $(document).ready(function() {
                                 dividers: dividers,
                                 department: department,
                                 table: table,
+                                seatCover: seatCovers,
+                                tamponBox: tamponBox,
                                 floor: floor,
                                 establishment: establishment,
                                 createdBy: id
                             }; // if they didn't complete the form ...
-                            if (!sex || !department || !table || !establishment) {
+                            if (!sex || !department || !table || !establishment || !floor) {
                                 alert("Please complete the form.");
                                 return;
                             }

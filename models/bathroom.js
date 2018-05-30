@@ -34,6 +34,16 @@ module.exports = function(sequelize, DataTypes) {
          unique: false,
         allowNull: false,
     },
+    seatCover: { 
+        type: DataTypes.STRING,
+         unique: false,
+        allowNull: false,
+    },
+    tamponBox: { 
+        type: DataTypes.STRING,
+         unique: false,
+        allowNull: false,
+    },
     table: { 
         type: DataTypes.STRING,
          unique: false,

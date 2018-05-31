@@ -426,7 +426,7 @@ $(document).ready(function() {
                     lastReview = "";
                 }
                 if (result.sex != "Men") { // if its not the mens room
-                    var div = $("<div>").append( // display this
+                    let div = $("<div>").append( // display this
                         "<div class='card locationCard'>" + "<div class='card-content'>" +
                         "<div class='row'><div class='col l6 m7 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
@@ -455,7 +455,7 @@ $(document).ready(function() {
                     //End for loop
                 }
                 else { // if it is a mens room
-                    var div = $("<div>").append( // display this
+                    let div = $("<div>").append( // display this
                         "<div class='card locationCard'>" + "<div class='card-content'>" +
                         "<div class='row'><div class='col l6 m7 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
@@ -483,7 +483,20 @@ $(document).ready(function() {
                     //End for loop
                 }
             });
-
+        } 
+        else {
+            let div = $("<div>").append(
+                    "<div class='card'>" + "<div class='card-content'>" +
+                    "<div class='row'><div class='col l6 m7 s12 center'>" +
+                    "<img class='searchImage' id='searchImage' src='./images/sorry.jpg'><br>" +
+                    "</div>" + "<div class='col l6 m5 s12 center'>" +
+                    "<h5 class='sorryHeading'>There are currently no restooms near you, help us out and put this spot on the map!</h5>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+                $("#cardArea").append(div);
         } // initialize the map
         initMap()
     }

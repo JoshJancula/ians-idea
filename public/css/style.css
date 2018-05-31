@@ -42,7 +42,7 @@ input[type="checkbox"]:focus + label::before {
 }
 
 #map {
-        height: 420px;
+        height: 410px;
         display: block;
         margin-top: 1%;
       }
@@ -57,6 +57,10 @@ input[type="checkbox"]:focus + label::before {
         max-height: 300px;
         margin-bottom: 10%;
     }
+    
+.sorryHeading {
+    margin-top: 15%;
+}
     
  
 
@@ -120,5 +124,9 @@ input[type="checkbox"]:focus + label::before {
     .viewReviews {
     margin-left: 0%;
     margin-top: 2%;
+}
+
+.sorryHeading {
+    margin-top: -15%;
 }
 }

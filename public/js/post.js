@@ -430,15 +430,15 @@ $(document).ready(function() {
                         "<div class='card locationCard'>" + "<div class='card-content'>" +
                         "<div class='row'><div class='col l6 m7 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
-                        "<p> Average Rating: " + averageRating + "</p>" +
-                        "<p> Floor:  " + result.floor + "</p>" +
-                        "<p> Department:  " + result.department + "</p>" +
-                        "<p> Last Reviewed on: " + lastReview + "</p>" +
-                        "<p> Gender: " + result.sex + "</p>" +
-                        "<p> Seat Covers Provided: " + result.seatCover + "</p>" +
-                        "<p> Changing Table: " + result.table + "</p>" +
-                        "<p> Recepticle for feminine hygeine products: " + result.tamponBox + "</p>" +
-                        "<p> Distance: " + result.distance + "</p>" +
+                        "<p><span style='font-weight: bold;'> Average Rating:</span> " + averageRating + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Floor: </span> " + result.floor + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Department:</span>  " + result.department + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Last Reviewed on:</span> " + lastReview + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Gender:</span> " + result.sex + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Seat Covers Provided:</span> " + result.seatCover + "</p>" +
+                        "<p><span style='font-weight: bold;'> Changing Table:</span> " + result.table + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Recepticle for feminine hygeine products:</span> " + result.tamponBox + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Distance: </span>" + result.distance + "</p>" +
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button><br>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
                         "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
@@ -459,15 +459,15 @@ $(document).ready(function() {
                         "<div class='card locationCard'>" + "<div class='card-content'>" +
                         "<div class='row'><div class='col l6 m7 s12'>" +
                         "<h5>Establishment: " + result.establishment + "</h5>" +
-                        "<p> Average Rating: " + averageRating + "</p>" +
-                        "<p> Floor:  " + result.floor + "</p>" +
-                        "<p> Department:  " + result.department + "</p>" +
-                        "<p> Last Reviewed on: " + lastReview + "</p>" +
-                        "<p> Gender: " + result.sex + "</p>" +
-                        "<p> Seat Covers Provided: " + result.seatCover + "</p>" +
-                        "<p> Urinal Dividers: " + result.dividers + "</p>" +
-                        "<p> Changing Table: " + result.table + "</p>" +
-                        "<p> Distance: " + result.distance + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Average Rating:</span> " + averageRating + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Floor: </span> " + result.floor + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Department:</span>  " + result.department + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Last Reviewed on:</span> " + lastReview + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Gender:</span> " + result.sex + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Seat Covers Provided:</span> " + result.seatCover + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Urinal Dividers:</span> " + result.dividers + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Changing Table:</span> " + result.table + "</p>" +
+                        "<p><span style='font-weight: bold;'>  Distance: </span>" + result.distance + "</p>" +
                         "<button data-target='postModal' class='btn modal-trigger createReview'  data-id='" + result.id + "'>Write Review</button><br>" +
                         "<button data-target='reviewsModal' class='btn modal-trigger viewReviews'  data-id='" + result.id + "'>View Reviews</button><br><br>" +
                         "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
@@ -518,10 +518,10 @@ $(document).ready(function() {
                     "<div class='card'>" + "<div class='card-content'>" +
                     "<div class='row'><div class='col l6 m5 s12'>" +
                     "<h5>Rating: " + result.rating + " Stars</h5>" +
-                    "<p> Air Quality:  " + result.airQuality + "</p>" +
-                    "<p> Review: " + result.comment + "</p>" +
-                    "<p> Reviewed by: " + result.username + "</p>" +
-                    "<p> Reviewed on: " + formattedDate + "</p><br>" +
+                    "<p><span style='font-weight: bold;'>  Air Quality:</span>  " + result.airQuality + "</p>" +
+                    "<p><span style='font-weight: bold;'>  Review:</span> " + result.comment + "</p>" +
+                    "<p><span style='font-weight: bold;'>  Reviewed by:</span> " + result.username + "</p>" +
+                    "<p><span style='font-weight: bold;'>  Reviewed on:</span> " + formattedDate + "</p><br>" +
                     "<a data-target='reportModal' class='btn red darken-1 modal-trigger report'  data-id='" + result.id + "'>Report</a>" +
                     "</div><div class='col l6 m7 s12 center'>" +
                     "<img class='searchImage' id='searchImage' src=" + image + "><br>" +

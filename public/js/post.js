@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    
+
     // hide this stuff on load
     $("#searchBathroom").hide();
     $("#dividerRow").hide();
@@ -29,7 +29,7 @@ $(document).ready(function() {
         projectId: "where-2-poo",
         storageBucket: "where-2-poo.appspot.com",
         messagingSenderId: "622144128093"
-    };// initialize firebase
+    }; // initialize firebase
     firebase.initializeApp(config);
 
     // globals
@@ -127,7 +127,7 @@ $(document).ready(function() {
                             let department = $("#department").val().trim();
                             let dividers = $("#dividers").val();
                             let table = $("#hasChangingTable").val();
-                            let floor = $("#floor").val();
+                            let floor = $("#floor").val().trim();
                             let tamponBox = $("#tamponBox").val();
                             let seatCovers = $("#seatCovers").val();
                             let establishment = $("#establishment").val().trim();
@@ -483,20 +483,20 @@ $(document).ready(function() {
                     //End for loop
                 }
             });
-        } 
+        }
         else {
             let div = $("<div>").append(
-                    "<div class='card'>" + "<div class='card-content'>" +
-                    "<div class='row'><div class='col l6 m7 s12 center'>" +
-                    "<img class='searchImage' id='searchImage' src='./images/sorry.jpg'><br>" +
-                    "</div>" + "<div class='col l6 m5 s12 center'>" +
-                    "<h5 class='sorryHeading'>There are currently no restooms near you, help us out and put this spot on the map!</h5>" +
-                    "</div>" +
-                    "</div>" +
-                    "</div>" +
-                    "</div>"
-                );
-                $("#cardArea").append(div);
+                "<div class='card'>" + "<div class='card-content'>" +
+                "<div class='row'><div class='col l6 m7 s12 center'>" +
+                "<img class='searchImage' id='searchImage' src='./images/sorry.jpg'><br>" +
+                "</div>" + "<div class='col l6 m5 s12 center'>" +
+                "<h5 class='sorryHeading'>There are currently no restooms near you, help us out and put this spot on the map!</h5>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>"
+            );
+            $("#cardArea").append(div);
         } // initialize the map
         initMap()
     }

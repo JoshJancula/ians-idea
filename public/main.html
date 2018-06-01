@@ -50,7 +50,7 @@
                 <a id='searchBathroom' class="waves-effect waves-light btn blue lighten-2">Find a Bathroom</a>
                 <h5>Or Click here to add a new restroom to our network.</h5>
                 <!--<a class="waves-effect waves-light btn modal-trigger" href="#bathRoomModal">New Bathroom</a>-->
-                <a href="#bathRoomModal" class="modal-trigger btn-floating btn-large waves-effect waves-light red lighten-2"><i class="material-icons">add</i></a>
+                <a id='bathroomTrigger' class="btn-floating btn-large waves-effect waves-light red lighten-2"><i class="material-icons">add</i></a>
             </div>
             <div class='col l7 m12 s12'>
                 <img id='bathroomImage' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKtx2E9_rRxu83t46jTJkr3t_MCGqywxAVO4euoXWOdcQYS6n6hA'>
@@ -176,7 +176,7 @@
                     <form class="col m12">
                         <div class="row">
                             <div class="col s12 browser-default">
-                                <select id="rating" class="white-text" onchange="checkRating()">
+                                <select id="rating" class="white-text">
                                  <option value="" disabled selected>How would you rate this Restroom?</option>
                                   <option value="1">1 (Horrible)</option>
                                   <option value="2">2</option>
@@ -233,6 +233,7 @@
         <!-- login modal -->
         <div id="loginModal" class="modal blue">
             <div class="modal-content">
+                <h3 id='loginMessage' class='white-text'></h3>
                 <div class="row">
                     <form class="col m12">
                         <div class="row">

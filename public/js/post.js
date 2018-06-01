@@ -5,6 +5,7 @@ $(document).ready(function() {
     $("#dividerRow").hide();
     $("#horribleRow").hide();
     $("#tamponRow").hide();
+    $('#loginMessage').hide();
 
     //initialize these modals
     $('#postModal').modal({
@@ -19,6 +20,22 @@ $(document).ready(function() {
             // gets the post that this belongs to 
             modal.find('#reportThis').text(trigger.data('id'));
         }
+    });
+    
+    // make sure they're logged in before adding bathroom
+    $("#bathroomTrigger").on('click', function() {
+        $.get("api/user_data", {}, function(data) {}).done(function(data) {
+            var id = data.id; // must be logged in so we know who created it
+            if (!id || id === "undefined") {
+                $('#loginMessage').text('');
+                $('#loginMessage').show();
+                $('#loginMessage').text('Please login before adding an entry.');
+                $("#loginModal").modal('open');
+            }
+            else {
+                $('#bathRoomModal').modal('open');
+            }
+        });
     });
 
     // firebase config variables
@@ -201,6 +218,9 @@ $(document).ready(function() {
                 BathroomId: bathroomId
             }; // make sure they are logged in
             if (!id || id === "undefined") {
+                $('#loginMessage').text('');
+                $('#loginMessage').show();
+                $('#loginMessage').text('You must be logged in to submit a review.');
                 $("#loginModal").modal('open');
             }
             // Don't submit unless theres a rating at least
@@ -585,6 +605,9 @@ $(document).ready(function() {
             var plantiff = data.username;
             // if they aren't logged in then they can't report it, we track snitches
             if (!plantiff || plantiff === "undefined") {
+                $('#loginMessage').text('');
+                $('#loginMessage').show();
+                $('#loginMessage').text('You must be logged in to submit a report.');
                 $("#loginModal").modal('open');
             }
             else {

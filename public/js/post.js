@@ -151,6 +151,15 @@ $(document).ready(function() {
                             else { // submit the bathroom
                                 submitBathroom(newBathroom);
                                 $("#bathRoomModal").modal('close');
+                                let sex = $("#sex").val();
+                                $("#department").val("");
+                                $("#dividers").val("");
+                                $("#hasChangingTable").val("");
+                                $("#floor").val("");
+                                $("#tamponBox").val("");
+                                $("#seatCovers").val("");
+                                $("#establishment").val("");
+                                $("#thankYouModal").modal('open')
                             }
                         }
                         else { // tell them it already exists
@@ -211,6 +220,7 @@ $(document).ready(function() {
                 $("#image").val("");
                 $("#postTo").val("");
                 $("#postModal").modal('close');
+                $("#thankYouModal").modal('open')
             }
             else {
                 let newPost = {
@@ -229,6 +239,7 @@ $(document).ready(function() {
                 $("#image").val("");
                 $("#postTo").val("");
                 $("#postModal").modal('close');
+                $("#thankYouModal").modal('open')
             }
         });
     }

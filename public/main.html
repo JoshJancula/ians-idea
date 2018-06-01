@@ -15,7 +15,6 @@
     <main>
         <!--begin nav-->
         <nav>
-
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">Where-2-Poo</a>
                 <a href="#" data-activates="slide-out" class="center button-collapse hide-on-large-only" id="mobileNavIcon"><i class="center material-icons medium">menu</i></a>
@@ -61,12 +60,12 @@
         <div class='row' id='resultArea'>
             <div class='col l4 m12 s12'>
                 <div id="map"></div>
-                 <div id='scrollHere'></div>
+                <div id='scrollHere'></div>
             </div>
             <div class='col l8 m12 s12' id='cardArea'></div>
 
         </div>
-       
+
 
         <!--end main content area-->
 
@@ -106,7 +105,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
 
                         <div class="row">
                             <div class="input-field col l12 s12">
@@ -126,7 +125,7 @@
                                 <label for="department">Was this in a specific wing or department? If so please elaborate.</label>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col s12 browser-default">
                                 <select id="hasChangingTable" class="white-text">
@@ -136,14 +135,14 @@
                                 </select>
                             </div>
                             <div class="row" id='tamponRow'>
-                            <div class="col s12 browser-default">
-                                <select id="tamponBox" class="white-text">
+                                <div class="col s12 browser-default">
+                                    <select id="tamponBox" class="white-text">
                                   <option value="" disabled selected>Is there a recepticle for feminine hygeine porducts?</option>
                                   <option value="Yes">Yes</option>
                                   <option value="No">No</option>
                                 </select>
+                                </div>
                             </div>
-                        </div>
                         </div>
                         <div class="row" id='seatCoverRow'>
                             <div class="col s12 browser-default">
@@ -199,7 +198,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="input-field col l12 m12 s12">
                                 <input id="postTo" type="hidden">
@@ -262,7 +261,7 @@
         </div>
         <!--end login modal-->
 
-        <!-- register -->
+        <!-- register modal -->
         <div id="registerModal" class="modal blue">
             <div class="modal-content">
                 <div class="row">
@@ -361,33 +360,45 @@
             </div>
         </div>
         <!--end reviews modal-->
-        
-        
-         <!-- Reviews for bathrooms modals -->
+
+
+        <!-- thank you modal -->
+        <div id="thankYouModal" class="modal blue">
+            <div class="modal-content">
+                <h3 class='white-text'>Thank you for your input</h3>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Dismiss</a>
+            </div>
+        </div>
+        <!--end thank you modal-->
+
+
+        <!-- Reviews for bathrooms modals -->
         <div id="reportModal" class="modal red">
             <div class="modal-content">
-                 <div class="row">
-                            <div class="col s12 browser-default">
-                                <select id="reportType" class="white-text">
+                <div class="row">
+                    <div class="col s12 browser-default">
+                        <select id="reportType" class="white-text">
                                   <option value="" disabled selected>Is this a Bathroom Location or Review?</option>
                                   <option value="bathroom">Bathroom Location</option>
                                   <option value="review">Review</option>
                                 </select>
-                            </div>
-                        </div>
+                    </div>
+                </div>
                 <div class="row white-text">
-                            <div class="input-field col l12 m12 s12">
-                                <input id="reportThis" type="hidden">
-                                <textarea id="reason" class="materialize-textarea review white-text"></textarea>
-                                <label class='white-text' for="reason">Reason for reporting...</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field">
-                                <a href="#" id="submitReport" class="btn waves-effect waves-light blue-grey lighten-3 center-align" style="margin-top: 15px; width: 200px;"><span class="black-text">Submit</span></a>
-                            </div>
-                        </div>
-                        
+                    <div class="input-field col l12 m12 s12">
+                        <input id="reportThis" type="hidden">
+                        <textarea id="reason" class="materialize-textarea review white-text"></textarea>
+                        <label class='white-text' for="reason">Reason for reporting...</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field">
+                        <a href="#" id="submitReport" class="btn waves-effect waves-light blue-grey lighten-3 center-align" style="margin-top: 15px; width: 200px;"><span class="black-text">Submit</span></a>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Dismiss</a>
@@ -410,16 +421,14 @@
 
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfdlz5KnJ_YTspgA0zoOYXh9MueUejrJY&libraries=places">
-    </script>
-
-    <!--<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyCJKypJQC2GoMDHQg2RXtTVSjc54ljmUMQ"></script>-->
-
+ </script>
 
     <script>
         $(document).ready(function() {
             $('.collapsible').collapsible();
             $(".button-collapse").sideNav();
             $('#bathRoomModal').modal();
+            $('#thankYouModal').modal();
             $('#termsModal').modal();
             $('#forgotPassword').modal();
             $('#registerModal').modal();
@@ -437,8 +446,8 @@
                 $("#tamponRow").show();
             }
         }
-        
-        
+
+
 
 
         function selectOnlyThis(id) {

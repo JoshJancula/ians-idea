@@ -23,7 +23,7 @@ $(document).ready(function() {
     });
     
     // make sure they're logged in before adding bathroom
-    $("#bathroomTrigger").on('click', function() {
+    $(document).on('click', "#bathroomTrigger", function() {
         $.get("api/user_data", {}, function(data) {}).done(function(data) {
             var id = data.id; // must be logged in so we know who created it
             if (!id || id === "undefined") {
@@ -170,7 +170,6 @@ $(document).ready(function() {
                             else { // submit the bathroom
                                 submitBathroom(newBathroom);
                                 $("#bathRoomModal").modal('close');
-                                let sex = $("#sex").val();
                                 $("#department").val("");
                                 $("#dividers").val("");
                                 $("#hasChangingTable").val("");

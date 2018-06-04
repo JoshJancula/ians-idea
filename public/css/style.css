@@ -112,6 +112,7 @@ input[type="checkbox"]:focus + label::before {
     
     .locationCard {
         text-align: center;
+       
     }
     
    

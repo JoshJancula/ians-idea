@@ -29,6 +29,11 @@ module.exports = function(sequelize, DataTypes) {
          unique: false,
         allowNull: false,
     },
+    charge: { 
+        type: DataTypes.STRING,
+         unique: false,
+        allowNull: false,
+    },
     department: { 
         type: DataTypes.STRING,
          unique: false,

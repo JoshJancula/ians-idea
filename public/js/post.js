@@ -144,6 +144,7 @@ $(document).ready(function() {
                             let department = $("#department").val().trim();
                             let dividers = $("#dividers").val();
                             let table = $("#hasChangingTable").val();
+                            let charge = $("#charge").val();
                             let floor = $("#floor").val().trim();
                             let tamponBox = $("#tamponBox").val();
                             let seatCovers = $("#seatCovers").val();
@@ -155,13 +156,14 @@ $(document).ready(function() {
                                 dividers: dividers,
                                 department: department,
                                 table: table,
+                                charge: charge,
                                 seatCover: seatCovers,
                                 tamponBox: tamponBox,
                                 floor: floor,
                                 establishment: establishment,
                                 createdBy: id
                             }; // if they didn't complete the form ...
-                            if (!sex || !department || !table || !establishment || !floor) {
+                            if (!sex || !department || !table || !establishment || !floor || !charge) {
                                 alert("Please complete the form.");
                                 return;
                             }
@@ -185,7 +187,7 @@ $(document).ready(function() {
                     })
                 }
                 else { // tell them we only want new restrooms created close by
-                    alert("Please only create restrooms inside the restroom or within 20-30 feet of the facility to help insure map accuracy.")
+                    alert("Please only create restrooms inside the restroom or within 50 feet of the facility to help insure map accuracy.")
                 }
             }
         });
